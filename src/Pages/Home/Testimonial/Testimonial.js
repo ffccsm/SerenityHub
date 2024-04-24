@@ -10,23 +10,23 @@ const Testimonial = () => {
     const reviews=[
         {
             _id:1,
-            name:'Harry Kane',
-            location:'England',
-            rev:'It is a long established fact that by the readable content of a lot layout. The point of using Lorem a more-or-less normal distribu to using Content here, content.',
+            name:'Salam Kabir',
+            location:'Dhaka',
+            rev:'Rehab center review: Layout, cleanliness, staff, programs, success rates, patient experiences—all crucial. Detailed insights vital for informed decisions.            ',
             img:people1
         },
         {
             _id:2,
-            name:'Fatima',
-            location:'Brazil',
-            rev:'I had a fantastic experience at Toothtopia. The dentist was thorough and made sure I was comfortable throughout my appointment. I highly recommend this dental practice to anyone in need of quality care',
+            name:'Jannat Shoma',
+            location:'Tangail',
+            rev:'Clean, organized layout. Professional staff. Effective programs. High success rates. Patient experiences positive. Detailed insights aid informed decisions.',
             img:people2 
         },
         {
             _id:3,
-            name:'Tina',
-            location:'USA',
-            rev:'I had a wonderful visit at Toothtopia. The staff was friendly, the technology was top-notch, and provided exceptional care resulting in a healthy and beautiful smile.',
+            name:'Aisha Yamin',
+            location:'Noakhali',
+            rev:'Outstanding service! Prompt, courteous, and efficient. Exceeded expectations in every aspect. Highly recommended for anyone seeking top-notch assistance.',
             img:people3 
         }
     ]

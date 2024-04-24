@@ -8,7 +8,7 @@ const About = () => {
       <h2 className='mb-10 text-3xl font-semibold text-primary text-center'>Development Credit</h2>
 
       
-        <div className='m-20 sm my-20 grid grid-cols-2 gap-16 min-h-fit	'>
+        <div className='m-20 sm my-20 grid grid-cols-3 gap-16 min-h-fit	'>
 
 
 <div className="card card-side bg-base-100 shadow-xl justify-center	 ">
@@ -53,12 +53,12 @@ const About = () => {
 <div > 
     <div className=" max-w-[400px] h-[400px " >
 
-  <figure > <img className="rounded-lg mt-4" src="https://i.ibb.co/bBsmQN2/Arif.jpg " alt="Movie"  /></figure>
+  <figure > <img className="rounded-lg mt-4" src="https://i.ibb.co/5kT1M0G/Sojoul.jpg " alt="Movie"  /></figure>
 
   </div>
 
   <div className="card-body">
-    <h2 className="card-title">Md. Ariful Islam</h2>
+    <h2 className="card-title">Md. Nahid Hasan Sajoul </h2>
     <p>Devops engineer  .</p>
     <div className="card-actions justify-end">
       <button className="btn btn-primary">See More</button>
@@ -66,37 +66,10 @@ const About = () => {
   </div>
 </div>
 </div>
-
-
-<div className="card card-side bg-base-100 shadow-xl justify-center	 ">
-<div > 
-    <div className=" max-w-[400px] h-[400px " >
-
-  <figure > <img className="rounded-lg mt-4" src="https://i.ibb.co/bgb7Hbm/Aysa.jpg " alt="Movie"  /></figure>
-
-  </div>
-
-  <div className="card-body">
-    <h2 className="card-title">Aysha</h2>
-    <p>Senior Devops engineer  .</p>
-    <div className="card-actions justify-end">
-      <button className="btn btn-primary">See More</button>
-    </div>
-  </div>
+  
 </div>
 </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-        </div>
+    
     );
 };
 

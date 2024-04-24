@@ -1,33 +1,32 @@
 import React from 'react';
-import fluoride from '../../../images/fluoride.png';
-import cavity from '../../../images/cavity.png';
-import whitening from '../../../images/whitening.png';
+import physical from '../../../images/physical1.png';
+import occupational from '../../../images/physiotherapist.png';
+import cognitive from '../../../images/cognitive.png';
 import Service from './Service';
 import Lottie from "lottie-react";
 import dental from '../Home/Lottie/dentalcare.json';
 const Services = () => {
 
     const serviceItem=[
+        
         {
-            id:1,
-            name:'Fluoride Treatment',
-            description:'Fluoride varnish can be applied to both baby teeth and adult teeth by a dentist. The process involves painting a varnish containing high levels of fluoride onto the surface of the tooth twice a year to prevent decay.',
-            icon:fluoride
-
-        },
-        {
-            id:2,
-            name:'Cavity Filling',
-            description:'Before filling cavities, your dentist will numb your teeth, gums and surrounding skin to avoid and lessen discomfort during the procedure.',
-            icon:cavity
-
-        },
-        {
-            id:3,
-            name:'Teeth Whitening',
-            description:'Teeth Whitening is a quick and painless in-office whitening system that provides dramatic results—teeth that are up to eight shades whiter!',
-            icon:whitening   
-        }
+            id: 1,
+            name: 'Physical Therapy',
+            description: 'Physical therapy sessions involve various exercises and techniques tailored to your specific needs, administered by a trained therapist. These sessions aim to improve mobility, reduce pain, and enhance overall physical function.',
+            icon: physical  
+            },
+            {
+            id: 2,
+            name: 'Occupational Therapy',
+            description: 'Occupational therapy focuses on helping individuals regain independence in daily activities such as self-care, work, and leisure. Therapists use specialized techniques and adaptive strategies to address physical and cognitive challenges.',
+            icon: occupational
+            },
+            {
+            id: 3,
+            name: 'Cognitive Rehabilitation',
+            description: 'Cognitive rehabilitation involves targeted exercises and activities designed to improve cognitive functions such as memory, attention, and problem-solving. This therapy helps individuals regain cognitive skills lost due to injury or illness.',
+            icon: cognitive
+            }
     ]
     return (
         <div className='mt-10 py-10'>

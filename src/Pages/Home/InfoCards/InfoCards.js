@@ -14,21 +14,21 @@ const InfoCards = () => {
         {
             id:1,
             name:'Opening Hours',
-            description:'Open 9.00 am to 5.00 pm everyday. Except Sunday.',
+            description:'Open 10.00 am to 9.00 pm everyday. Except Saturday.',
             icon:clock,
             bgClass:'bg-primary'
         },
         {
             id:2,
             name:'Our Location',
-            description:'Nikunja-2,Dhaka-1229',
+            description:'Pallabi,Dhaka-1216',
             icon:marker,
             bgClass:'bg-secondary'
         },
         {
             id:3,
             name:'Contact',
-            description:'+8807777777777',
+            description:'+8809638700900',
             icon:phone,
             bgClass:'bg-primary'
         }
@@ -45,7 +45,7 @@ const InfoCards = () => {
             
                 
             <p className='text-start'>
-            Regular dental visits are essential for maintaining good oral health and preventing serious dental problems. Dentists can identify and treat dental issues early on, which can help to prevent more severe problems from developing.If you are experiencing dental pain or other symptoms, it is important to see a dentist as soon as possible. Prompt treatment can help to prevent the problem from getting worse and may also help to alleviate your symptoms.
+            Regular rehabilitation sessions are crucial for maintaining optimal physical and mental health and preventing serious functional impairments. Rehabilitation professionals can identify and address issues early, thus preventing the progression of more severe conditions. If you are experiencing pain or other symptoms related to your physical or cognitive abilities, it is imperative to seek rehabilitation services promptly. Early intervention can mitigate worsening symptoms and improve overall outcomes.
             </p>
            
             </div>

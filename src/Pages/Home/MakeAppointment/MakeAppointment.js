@@ -13,7 +13,7 @@ const MakeAppointment = () => {
             <h4 className='text-3xl text-center text-primary font-semibold'>Appointment</h4>
             <div className='grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 mt-10 justify-center items-center px-10'>
                 <p className='text-start'>
-                A dentist appointment is a scheduled visit to a dental professional to receive oral health care services. The appointment may be for routine check-ups, cleanings, or to address specific dental issues or concerns.During a dentist appointment, the dentist will perform a comprehensive examination of your teeth, gums, and other oral tissues. They may take X-rays to help diagnose any potential problems and discuss your oral health history and any symptoms you may be experiencing.
+                A rehabilitation appointment is a scheduled visit to a rehabilitation professional to receive personalized care services aimed at improving physical and cognitive function. The appointment may be for routine assessments, therapy sessions, or to address specific rehabilitation goals or concerns. During a rehabilitation appointment, the professional will conduct a thorough evaluation of your abilities, assess your progress, and may utilize diagnostic tools such as assessments or tests to tailor your treatment plan. They will also review your rehabilitation history and any symptoms or challenges you may be facing.
                 </p>
 
                 <Lottie animationData={care} loop={true} className='lg:w-10/12 rounded mx-auto'/>
@@ -35,8 +35,9 @@ const MakeAppointment = () => {
                     <div className='text-white'>
                         
                         <h1 className="text-4xl font-bold">Make an Appointment Today!</h1>
-                        <p className="py-6">Going to the dentist can be a nerve-wracking experience for many people, but it's important to keep up with regular dental check-ups to maintain good oral health.
-                        The exact procedure at a dentist appointment will depend on the type of appointment you have and the specific needs of your dental health.
+                        <p className="py-6">
+                        Entering rehabilitation can be an anxiety-inducing experience for many individuals, yet it's crucial to adhere to regular rehabilitation appointments to sustain optimal physical and cognitive well-being.
+                        The precise protocol during a rehabilitation appointment will vary based on the nature of the appointment and the individual requirements of your rehabilitation journey.
                         </p>
                         
                         <Link to='/appointment'><PrimaryButton>Appointment</PrimaryButton></Link>

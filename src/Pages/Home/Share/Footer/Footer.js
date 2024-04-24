@@ -29,8 +29,8 @@ const Footer = () => {
                     </div>
                     <div>
                          <span className="footer-title">About</span>
-                        <p>Copyright © 2023 - All right reserved by Toothtopia Ltd</p>
-                        <p>Team Vulcan @NUB</p>
+                        <p>Copyright © 2024 - All right reserved by SerenityHub</p>
+                        <p>Team SerenityHub @NUB</p>
                         <Link to='/about' className="link link-hover">Development Credit</Link>
                     </div>
                     

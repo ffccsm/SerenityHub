@@ -34,7 +34,9 @@ const Contact = () => {
             <div className='grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 mt-10 justify-center items-center px-10'>
             <Lottie animationData={contact} loop={true} className='lg:w-7/12 mx-auto rounded'/>
             {/* <Lottie animationData={bye} loop={true} className='lg:w-7/12 mx-auto rounded'/> */}
-            <p>Welcome to the Dentist Office of Dr. M. A. Wadud sarker. Since 1980, The Dental Care has been proud to combine modern techniques and high-tech equipment. Dr. Sarker and his team deliver a personalized and comfortable dental care experience unlike any other Mason dentist.
+            <p>Welcome to the SerenityHub, Since 1980, we have been dedicated to blending advanced methodologies and cutting-edge equipment to provide exemplary rehabilitation services. Dr. Sarker and his team offer tailored and compassionate rehabilitation experiences unmatched by any other center in Mason.
+
+
             </p>
             </div>
 
@@ -67,9 +69,10 @@ const Contact = () => {
               </form>
               <div className='flex flex-col pt-4 text-white'>
                 
-                <h1 className='text-3xl flex items-center my-3'><GoMailRead className='mr-3' /> <span className='text-xl font-medium'>mpisohel14@gmail.com</span></h1>
-                <h1 className='text-3xl flex items-center my-3'><BsFillTelephoneForwardFill className='mr-3'/> <span className='text-xl font-medium'>+8801777777777</span></h1>
-                <h1 className='text-3xl flex items-center my-3'><MdLocationOn className='mr-3'/> <span className='text-xl font-medium'>Dhaka, Bangladesh</span></h1>
+                <h1 className='text-3xl flex items-center my-3'><GoMailRead className='mr-3' /> <span className='text-xl font-medium'>help@SerenityHub.com</span></h1>
+                <h1 className='text-3xl flex items-center my-3'><BsFillTelephoneForwardFill className='mr-3'/> <span className='text-xl font-medium'>+8809638700900
+</span></h1>
+                <h1 className='text-3xl flex items-center my-3'><MdLocationOn className='mr-3'/> <span className='text-xl font-medium'>Pallabi, Dhaka, Bangladesh</span></h1>
               </div>
              </div>
             </div>
