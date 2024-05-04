@@ -84,4 +84,4 @@ const BookingModal = ({ treatment, selectedDate,setTreatment,refetch }) => {
     );
 };
 
-export default BookingModal;
+export default BookingModal;
