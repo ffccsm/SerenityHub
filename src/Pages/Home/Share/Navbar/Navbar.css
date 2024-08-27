@@ -1,0 +1,52 @@
+/* Navbar.css */
+.submenu {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-width: 200px;
+    z-index: 10;
+  }
+  
+  .treatment-menu:hover .submenu {
+    display: block;
+  }
+  
+  .submenu li {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .submenu li:last-child {
+    border-bottom: none;
+  }
+  
+  .submenu a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .submenu a:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .arrow {
+    font-size: 0.75rem;
+    margin-left: 0.5rem;
+  }
+
+  /* src/components/Navbar.css */
+.submenu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .submenu li {
+    position: relative;
+  }
+  
+  .arrow {
+    display: inline-block;
+    margin-left: 0.5rem;
+  }
+  

@@ -10,13 +10,14 @@ import Contact from './Contact/Contact';
 import SideBanner from './SideBanner/SideBanner';
 
 
+
 const Home = () => {
     
     return (
         <div className='mx-auto px-10'>
             <Banner></Banner>
-            <InfoCards></InfoCards>
             <Services></Services>
+            <InfoCards></InfoCards>
             <SideBanner></SideBanner>
             <MakeAppointment></MakeAppointment>
             <Testimonial></Testimonial>

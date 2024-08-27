@@ -9,7 +9,6 @@ import { toast } from 'react-hot-toast';
 import './Contact.css';
 import Lottie from "lottie-react";
 import contact from '../Lottie/myContact.json';
-import bye from '../Lottie/bye.json';
 const Contact = () => { 
 
     const form = useRef();
@@ -64,7 +63,7 @@ const Contact = () => {
                 <textarea name='message' className="textarea textarea-bordered border bg-transparent border-white" placeholder="Message" required></textarea>
                </div>
                <div className="form-control mt-6 mb-8">
-                <button type='submit' className="btn border-none  bg-[#00b894] text-white"><FaTelegramPlane className='mr-2' /><span>Send Message</span></button>
+                <button type='submit' className="btn border-none  bg-[#00b894] text-white"><FaTelegramPlane className='mr-2' /><span>Send Query</span></button>
                </div>
               </form>
               <div className='flex flex-col pt-4 text-white'>
