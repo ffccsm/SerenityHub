@@ -6,7 +6,7 @@ import { MdLocationOn } from 'react-icons/md'; // Import Material Design icons
 const Footer = () => {
     return (
         <footer className="footer p-16 bg-neutral text-neutral-content">
-            <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
                 {/* Brand Section */}
                 <div className="flex flex-col items-center md:items-start">
                     <Link 
@@ -41,6 +41,18 @@ const Footer = () => {
                         <Link to='/home' className="link link-hover text-lg md:text-xl mb-2">Home</Link>
                         <Link to='/appointment' className="link link-hover text-lg md:text-xl mb-2">Appointment</Link>
                         <Link to='/contact' className="link link-hover text-lg md:text-xl mb-2">Contact</Link>
+                    </div>
+                </div>
+
+                {/* Our Treatment Section */}
+                <div className="flex flex-col items-center md:items-start md:text-left">
+                    <span className="footer-title text-xl mb-6">Our Treatment</span>
+                    <div className="flex flex-col items-center md:items-start w-full">
+                        <Link to='/treatment/AddictionTreatment' className="link link-hover text-lg md:text-xl mb-2">Addiction Treatment</Link>
+                        <Link to='/treatment/detoxification' className="link link-hover text-lg md:text-xl mb-2">Detoxification</Link>
+                        <Link to='/treatment/programmes' className="link link-hover text-lg md:text-xl mb-2">Programmes</Link>
+                        <Link to='/treatment/therapies' className="link link-hover text-lg md:text-xl mb-2">Therapies</Link>
+                        <Link to='/treatment/aftercare' className="link link-hover text-lg md:text-xl mb-2">Aftercare</Link>
                     </div>
                 </div>
 
