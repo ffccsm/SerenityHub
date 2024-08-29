@@ -6,9 +6,9 @@ const Detoxification = () => {
       <header className="text-center mb-8">
         <h1 className="text-4xl font-bold" style={{ color: '#0FCFEC' }}>Detoxification</h1>
         <img 
-          src="https://picsum.photos/800/400?random=2" 
+          src="https://i.postimg.cc/15tWFXzQ/Detoxification.jpg" 
           alt="Detoxification Service" 
-          className="w-full h-80 object-cover mt-4"
+          className="w-full h-[30rem] object-cover rounded-lg shadow-lg"
         />
       </header>
       <section className="my-8">

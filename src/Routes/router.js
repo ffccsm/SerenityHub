@@ -11,6 +11,7 @@ import Programmes from '../Pages/treatment/Programmes';
 import Detoxification from '../Pages/treatment/Detoxification';
 import Therapies from '../Pages/treatment/Therapies';
 import Aftercare from '../Pages/treatment/Aftercare';
+import AppointmentsList from '../Pages/AppointmentsList'; // Import the new component
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: '/treatment/Aftercare',
         element: <Aftercare />
+      },
+      {
+        path: '/appointments-list', // New route for AppointmentsList
+        element: <AppointmentsList />
       }
     ]
   }

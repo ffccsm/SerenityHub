@@ -9,10 +9,10 @@ const AddictionTreatment = () => {
 
       <section className="image-card mb-12">
         <img 
-          src="https://picsum.photos/1200/800?random=1" 
+          src="https://i.postimg.cc/5yPnGdnT/Addiction-Treatment.jpg" 
           alt="Addiction Treatment" 
           className="w-full h-[24rem] object-cover rounded-lg shadow-lg"
-          style={{ maxWidth: 'calc(100% - 2rem)' }} // Adjusts left and right margins
+          style={{ maxWidth: 'calc(100% )' }} // Adjusts left and right margins
         />
         <p className="mt-4 text-lg text-gray-700">
           Comprehensive addiction treatment programs to support recovery and wellness.

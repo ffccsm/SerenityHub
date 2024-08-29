@@ -17,10 +17,10 @@ const Home = () => {
         <div className='mx-auto px-10'>
             <Banner></Banner>
             <Services></Services>
-            <InfoCards></InfoCards>
             <SideBanner></SideBanner>
             <MakeAppointment></MakeAppointment>
             <Testimonial></Testimonial>
+            <InfoCards></InfoCards>
             <Contact> </Contact>
             <Chat/>
         </div>

@@ -6,9 +6,9 @@ const Programmes = () => {
       <header className="text-center mb-8">
         <h1 className="text-4xl font-bold" style={{ color: '#0FCFEC' }}>Rehab Programmes</h1>
         <img 
-          src="https://picsum.photos/800/400?random=4" 
+          src="https://i.postimg.cc/2SL2Htv9/Rehab-Programmes.jpg" 
           alt="Rehab Programmes Service" 
-          className="w-full h-80 object-cover mt-4"
+          className="w-full h-[30rem] object-cover rounded-lg shadow-lg"
         />
       </header>
       <section className="my-8">
