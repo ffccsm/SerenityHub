@@ -44,6 +44,8 @@ const Navbar = () => {
       <li><Link to='/meet-our-team'>Meet Our Team</Link></li> 
       <li><Link to='/contact'>Contact Us</Link></li>
       <li><Link to='/about'>About Us</Link></li>
+      <li><Link to='/login' className="btn btn-primary">Admin</Link></li>
+      {/* Add Admin Button */}
     </>
   );
 

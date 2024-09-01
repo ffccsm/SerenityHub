@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import emailjs from '@emailjs/browser';
 import { toast } from 'react-hot-toast';
 import { FaTelegramPlane } from 'react-icons/fa';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../../firebase'; // 
 
 const Appointment = () => {
   const form = useRef();
@@ -21,17 +22,26 @@ const Appointment = () => {
     setDefaultDate(formatDate(today)); // Set default date to today
   }, []);
 
-  const handleSendAppointment = (event) => {
+  const handleSendAppointment = async (event) => {
     event.preventDefault();
 
-    emailjs.sendForm('Appointment_qvtpf1o', 'template_p8mebw2', form.current, '4PRlfW6Yt-jqG2WE6')
-      .then((result) => {
-        console.log(result.text);
-        toast.success('Appointment request sent');
-      }, (error) => {
-        console.log(error.text);
-      });
-    form.current.reset();
+    const formData = {
+      name: event.target.name.value,
+      phone: event.target.phone.value,
+      email: event.target.email.value,
+      appointmentDate: event.target.appointmentDate.value,
+      service: event.target.service.value,
+      additionalRequirement: event.target.additionalRequirement.value,
+    };
+
+    try {
+      await addDoc(collection(db, 'appointments'), formData);
+      toast.success('Appointment successfully booked!');
+      form.current.reset();
+    } catch (error) {
+      console.error('Error adding appointment: ', error);
+      toast.error('Failed to book appointment. Try again.');
+    }
   };
 
   return (
@@ -64,6 +74,7 @@ const Appointment = () => {
             <h1 style={{ textAlign: 'center', fontSize: '1.5rem', fontWeight: '600', color: '#00b894', marginBottom: '1.5rem' }}>Please fill in your details</h1>
 
             <form ref={form} onSubmit={handleSendAppointment} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {/* Form Fields: Name, Phone, Email, etc */}
               <div style={{ position: 'relative' }}>
                 <input
                   id="name"
@@ -73,24 +84,7 @@ const Appointment = () => {
                   style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
                   required
                 />
-                <label 
-                  htmlFor="name" 
-                  style={{ 
-                    position: 'absolute', 
-                    top: '0.75rem', 
-                    left: '0.75rem', 
-                    fontSize: '1rem', 
-                    color: '#aaa',
-                    pointerEvents: 'none',
-                    transition: '0.3s ease',
-                    transform: 'translateY(-1.25rem)', 
-                    backgroundColor: 'white',
-                    padding: '0 0.25rem',
-                    transformOrigin: 'top left'
-                  }}
-                >
-                  Name
-                </label>
+                <label htmlFor="name" style={labelStyle}>Name</label>
               </div>
               <div style={{ position: 'relative' }}>
                 <input
@@ -101,24 +95,7 @@ const Appointment = () => {
                   style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
                   required
                 />
-                <label 
-                  htmlFor="phone" 
-                  style={{ 
-                    position: 'absolute', 
-                    top: '0.75rem', 
-                    left: '0.75rem', 
-                    fontSize: '1rem', 
-                    color: '#aaa',
-                    pointerEvents: 'none',
-                    transition: '0.3s ease',
-                    transform: 'translateY(-1.25rem)', 
-                    backgroundColor: 'white',
-                    padding: '0 0.25rem',
-                    transformOrigin: 'top left'
-                  }}
-                >
-                  Phone
-                </label>
+                <label htmlFor="phone" style={labelStyle}>Phone</label>
               </div>
               <div style={{ position: 'relative' }}>
                 <input
@@ -129,24 +106,7 @@ const Appointment = () => {
                   style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
                   required
                 />
-                <label 
-                  htmlFor="email" 
-                  style={{ 
-                    position: 'absolute', 
-                    top: '0.75rem', 
-                    left: '0.75rem', 
-                    fontSize: '1rem', 
-                    color: '#aaa',
-                    pointerEvents: 'none',
-                    transition: '0.3s ease',
-                    transform: 'translateY(-1.25rem)', 
-                    backgroundColor: 'white',
-                    padding: '0 0.25rem',
-                    transformOrigin: 'top left'
-                  }}
-                >
-                  Email
-                </label>
+                <label htmlFor="email" style={labelStyle}>Email</label>
               </div>
               <div style={{ position: 'relative' }}>
                 <input
@@ -159,24 +119,7 @@ const Appointment = () => {
                   style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
                   required
                 />
-                <label 
-                  htmlFor="appointmentDate" 
-                  style={{ 
-                    position: 'absolute', 
-                    top: '0.75rem', 
-                    left: '0.75rem', 
-                    fontSize: '1rem', 
-                    color: '#aaa',
-                    pointerEvents: 'none',
-                    transition: '0.3s ease',
-                    transform: 'translateY(-1.25rem)', 
-                    backgroundColor: 'white',
-                    padding: '0 0.25rem',
-                    transformOrigin: 'top left'
-                  }}
-                >
-                  Appointment Date
-                </label>
+                <label htmlFor="appointmentDate" style={labelStyle}>Appointment Date</label>
               </div>
               <select
                 name='service'
@@ -197,21 +140,7 @@ const Appointment = () => {
                 style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
                 required
               ></textarea>
-              <button type='submit' style={{ 
-                backgroundColor: '#00b894', 
-                color: 'white', 
-                border: 'none', 
-                padding: '0.75rem 1.5rem', 
-                fontSize: '1rem', 
-                borderRadius: '0.5rem', 
-                cursor: 'pointer',
-                transition: 'background-color 0.3s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#019f74'}
-              onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#00b894'}>
+              <button type='submit' style={buttonStyle}>
                 <FaTelegramPlane style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
                 <span style={{ textAlign: 'center' }}>Book Appointment</span>
               </button>
@@ -219,28 +148,37 @@ const Appointment = () => {
           </div>
         </div>
       </div>
-
-      {/* Media Queries */}
-      <style>{`
-        @media (max-width: 768px) {
-          #appointment {
-            padding: 1rem;
-          }
-          .form-control {
-            margin-bottom: 0.5rem;
-          }
-          input, select, textarea {
-            font-size: 1rem;
-            padding: 1rem;
-          }
-          button {
-            padding: 1rem 2rem;
-            font-size: 1.25rem;
-          }
-        }
-      `}</style>
     </div>
   );
+};
+
+// Label and button styles
+const labelStyle = {
+  position: 'absolute',
+  top: '0.75rem',
+  left: '0.75rem',
+  fontSize: '1rem',
+  color: '#aaa',
+  pointerEvents: 'none',
+  transition: '0.3s ease',
+  transform: 'translateY(-1.25rem)',
+  backgroundColor: 'white',
+  padding: '0 0.25rem',
+  transformOrigin: 'top left'
+};
+
+const buttonStyle = {
+  backgroundColor: '#00b894',
+  color: 'white',
+  border: 'none',
+  padding: '0.75rem 1.5rem',
+  fontSize: '1rem',
+  borderRadius: '0.5rem',
+  cursor: 'pointer',
+  transition: 'background-color 0.3s ease',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 };
 
 export default Appointment;
