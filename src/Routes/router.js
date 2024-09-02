@@ -14,11 +14,13 @@ import Aftercare from '../Pages/treatment/Aftercare';
 import AppointmentsList from '../Pages/Appointment/Appointment/AppointmentsList'; 
 import Login from "../Pages/Appointment/Appointment/Login";  
 import PrivateRoute from "../Pages/Appointment/Appointment/PrivateRoute";
+import CustomError from "../MyComponent/CustomError"; // Import the CustomError component
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Main />,
+    errorElement: <CustomError />, // Add the custom error component here
     children: [
       {
         path: '/',
