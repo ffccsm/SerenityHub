@@ -1,8 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';  // Import the auth module
+import { getAuth } from 'firebase/auth';  
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCKFB3ruOuyJTHx5LxEkyxVAonB7rt03ho",
   authDomain: "serenity-form.firebaseapp.com",
@@ -13,7 +12,6 @@ const firebaseConfig = {
   measurementId: "G-6CVEQN819D"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firestore
