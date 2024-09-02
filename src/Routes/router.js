@@ -12,9 +12,10 @@ import Detoxification from '../Pages/treatment/Detoxification';
 import Therapies from '../Pages/treatment/Therapies';
 import Aftercare from '../Pages/treatment/Aftercare';
 import AppointmentsList from '../Pages/Appointment/Appointment/AppointmentsList'; 
-import Login from "../Pages/Appointment/Appointment/Login";  
-import PrivateRoute from "../Pages/Appointment/Appointment/PrivateRoute";
+import Login from "../Login/Login";  
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import CustomError from "../MyComponent/CustomError"; // Import the CustomError component
+import TreatmentDetails from '../Pages/treatment/TreatmentDetails'; // Import the TreatmentDetails component
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: '/meet-our-team',
         element: <MeetOurTeam />
+      },
+      {
+        path: '/TreatmentDetails',
+        element: <TreatmentDetails /> // Add the TreatmentDetails route here
       },
       {
         path: '/treatment/AddictionTreatment',
