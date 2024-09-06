@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { toast } from 'react-hot-toast';
@@ -16,24 +16,24 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Update user profile with name
       await updateProfile(user, { displayName: name });
 
-      // Store additional user data in Firestore
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         name,
         email,
         phone,
-        role: 'user', // Set default role or customize as needed
+        role: 'user', 
       });
 
-      toast.success('Signup successful! You are now registered.');
-      // Optionally, redirect or handle further logic
+      await signInWithEmailAndPassword(auth, email, password);
+
+      toast.success('Signup successful!');
+      navigate('/home');
+      
     } catch (error) {
       console.error('Signup failed:', error); // Log the error for debugging
       setError(`Signup failed: ${error.message}`);
