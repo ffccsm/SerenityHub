@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import SubMenuItem from '../Navbar/SubMenuItem'; // Updated path
-import './SubMenuItem.css'; // Ensure this path is correct
-import './Navbar.css'; // Ensure this path is correct
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import SubMenuItem from '../Navbar/SubMenuItem';
+import './SubMenuItem.css';
+import './Navbar.css';
 
 const Navbar = () => {
   const [showSubMenu, setShowSubMenu] = useState(false);
+  const [user, setUser] = useState(null); // Track the logged-in user
+  const [isAdmin, setIsAdmin] = useState(false); // Track if the logged-in user is an admin
+  const auth = getAuth();
+  const navigate = useNavigate(); // Hook for programmatic navigation
 
   const handleMouseEnter = () => setShowSubMenu(true);
   const handleMouseLeave = () => setShowSubMenu(false);
@@ -19,6 +24,29 @@ const Navbar = () => {
     { name: 'Continuing Care (After Care)', path: '/treatment/Aftercare' },
   ];
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user); // Set the logged-in user
+        // Set admin status based on user role
+        setIsAdmin(/* condition to check if user is an admin */);
+      } else {
+        setUser(null);
+        setIsAdmin(false);
+      }
+    });
+    return () => unsubscribe();
+  }, [auth]);
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Redirect to /login/user after successful sign-out
+        navigate('/login/user');
+      })
+      .catch((error) => console.error('Sign-out error:', error));
+  };
+
   const menuItems = (
     <>
       <li><Link to='/home'>Home</Link></li>
@@ -28,7 +56,9 @@ const Navbar = () => {
         onMouseLeave={handleMouseLeave} 
         className="relative treatment-menu"
       >
-        <div className="cursor-pointer">Treatment <span className="arrow">▼</span></div>
+        <div className="cursor-pointer">
+          Treatment <span className="arrow">▼</span>
+        </div>
         {showSubMenu && (
           <ul className="submenu absolute mt-2 p-2 bg-white shadow-lg">
             {treatmentOptions.map((option, index) => (
@@ -41,11 +71,23 @@ const Navbar = () => {
           </ul>
         )}
       </li>
-      <li><Link to='/meet-our-team'>Meet Our Team</Link></li> 
+      <li><Link to='/meet-our-team'>Meet Our Team</Link></li>
       <li><Link to='/contact'>Contact Us</Link></li>
       <li><Link to='/about'>About Us</Link></li>
-      <li><Link to='/login' className="btn btn-primary">Admin</Link></li>
-      {/* Add Admin Button */}
+      {user ? (
+        <>
+          {isAdmin ? (
+            <li><Link to='/admin/dashboard' className="btn btn-secondary">Admin Dashboard</Link></li>
+          ) : (
+            <li><Link to='/user/dashboard' className="btn btn-secondary">User Dashboard</Link></li>
+          )}
+          <li>
+            <button onClick={handleSignOut} className="btn btn-primary">Sign Out</button>
+          </li>
+        </>
+      ) : (
+        <li><Link to='/login/user' className="btn btn-primary">User Login</Link></li>
+      )}
     </>
   );
 

@@ -30,6 +30,10 @@ const AppointmentsList = () => {
     fetchAppointments();
   }, []);
 
+  useEffect(() => {
+    filterAppointments();
+  }, [filter, appointments]);
+
   const filterAppointments = useCallback(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -52,10 +56,6 @@ const AppointmentsList = () => {
 
     setFilteredAppointments(filteredData);
   }, [appointments, filter]);
-
-  useEffect(() => {
-    filterAppointments();
-  }, [filterAppointments]);
 
   const handleExport = () => {
     const worksheet = XLSX.utils.json_to_sheet(filteredAppointments);

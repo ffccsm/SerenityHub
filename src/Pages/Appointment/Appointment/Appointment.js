@@ -1,184 +1,156 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { toast } from 'react-hot-toast';
-import { FaTelegramPlane } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../../firebase'; // 
+import { auth, db } from '../../../firebase'; // Ensure db is imported correctly
+import { useAuthState } from 'react-firebase-hooks/auth'; // Firebase hooks for easy user state management
+import { toast } from 'react-hot-toast';
 
 const Appointment = () => {
-  const form = useRef();
-  const [minDate, setMinDate] = useState('');
-  const [maxDate, setMaxDate] = useState('');
-  const [defaultDate, setDefaultDate] = useState('');
+  const [user, loading] = useAuthState(auth); // Fetch authenticated user data
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    appointmentDate: '',
+    service: '',
+    additionalRequirement: '',
+  });
 
   useEffect(() => {
-    const today = new Date();
-    const nextMonth = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30);
+    if (user) {
+      // Auto-fill user data when user is logged in
+      setFormData((prevData) => ({
+        ...prevData,
+        name: user.displayName || '', // Ensure displayName is set in user profile
+        email: user.email || '',
+        phone: '', // Ensure phone number is stored in user profile or add manual entry
+      }));
+    }
+  }, [user]);
 
-    // Format dates as YYYY-MM-DD
-    const formatDate = (date) => date.toISOString().split('T')[0];
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-    setMinDate(formatDate(today));
-    setMaxDate(formatDate(nextMonth));
-    setDefaultDate(formatDate(today)); // Set default date to today
-  }, []);
-
-  const handleSendAppointment = async (event) => {
-    event.preventDefault();
-
-    const formData = {
-      name: event.target.name.value,
-      phone: event.target.phone.value,
-      email: event.target.email.value,
-      appointmentDate: event.target.appointmentDate.value,
-      service: event.target.service.value,
-      additionalRequirement: event.target.additionalRequirement.value,
-    };
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      await addDoc(collection(db, 'appointments'), formData);
-      toast.success('Appointment successfully booked!');
-      form.current.reset();
+      await addDoc(collection(db, 'appointments'), {
+        ...formData,
+        userId: user.uid,
+        status: 'pending', // Default status as pending
+      });
+      toast.success('Appointment successfully submitted!');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        appointmentDate: '',
+        service: '',
+        additionalRequirement: '',
+      });
     } catch (error) {
-      console.error('Error adding appointment: ', error);
-      toast.error('Failed to book appointment. Try again.');
+      toast.error('Failed to submit appointment.');
+      console.error(error);
     }
   };
 
   return (
-    <div style={{ marginTop: '2.5rem', padding: '0 1rem' }}>
-      <h1 style={{ textAlign: 'center', fontSize: '2.5rem', fontWeight: '600', color: '#00b894', marginBottom: '2rem' }}>Book an Appointment</h1>
-
-      <div style={{ padding: '2rem 0' }}>
-        <div
-          id='appointment'
-          style={{ 
-            background: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://i.ibb.co/PjXkTxJ/contact.jpg')",
-            backgroundAttachment: 'fixed',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            padding: '2rem',
-            borderRadius: '1rem',
-            display: 'flex',
-            justifyContent: 'center'
-          }}
-        >
-          <div style={{ 
-            backgroundColor: 'white', 
-            padding: '1.5rem', 
-            borderRadius: '1rem', 
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
-            width: '90%',
-            maxWidth: '600px'
-          }}>
-            <h1 style={{ textAlign: 'center', fontSize: '1.5rem', fontWeight: '600', color: '#00b894', marginBottom: '1.5rem' }}>Please fill in your details</h1>
-
-            <form ref={form} onSubmit={handleSendAppointment} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {/* Form Fields: Name, Phone, Email, etc */}
-              <div style={{ position: 'relative' }}>
-                <input
-                  id="name"
-                  name='name'
-                  type="text"
-                  placeholder=" "
-                  style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
-                  required
-                />
-                <label htmlFor="name" style={labelStyle}>Name</label>
-              </div>
-              <div style={{ position: 'relative' }}>
-                <input
-                  id="phone"
-                  name='phone'
-                  type="tel"
-                  placeholder=" "
-                  style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
-                  required
-                />
-                <label htmlFor="phone" style={labelStyle}>Phone</label>
-              </div>
-              <div style={{ position: 'relative' }}>
-                <input
-                  id="email"
-                  name='email'
-                  type="email"
-                  placeholder=" "
-                  style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
-                  required
-                />
-                <label htmlFor="email" style={labelStyle}>Email</label>
-              </div>
-              <div style={{ position: 'relative' }}>
-                <input
-                  id="appointmentDate"
-                  name='appointmentDate'
-                  type="date"
-                  min={minDate}
-                  max={maxDate}
-                  defaultValue={defaultDate}
-                  style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
-                  required
-                />
-                <label htmlFor="appointmentDate" style={labelStyle}>Appointment Date</label>
-              </div>
-              <select
-                name='service'
-                style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
-                required
-              >
-                <option value="" disabled>Select Service</option>
-                <option value="Physical Therapy">Physical Therapy</option>
-                <option value="Occupational Therapy">Individual Counseling</option>
-                <option value="Speech Therapy">Group Therapy</option>
-                <option value="Cardiac Rehabilitation">Medication Management </option>
-                <option value="Neurological Rehabilitation">Biofeedback Therapy</option>
-                <option value="Pediatric Rehabilitation">Aftercare Services</option>
-              </select>
-              <textarea
-                name='additionalRequirement'
-                placeholder="Additional Requirement"
-                style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
-                required
-              ></textarea>
-              <button type='submit' style={buttonStyle}>
-                <FaTelegramPlane style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
-                <span style={{ textAlign: 'center' }}>Book Appointment</span>
-              </button>
-            </form>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-lg p-8 bg-white rounded-lg shadow-lg">
+        <h2 className="text-2xl font-semibold mb-6 text-center">Book Appointment</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              readOnly
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
           </div>
-        </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              readOnly
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="appointmentDate" className="block text-sm font-medium text-gray-700">Appointment Date</label>
+            <input
+              type="date"
+              id="appointmentDate"
+              name="appointmentDate"
+              value={formData.appointmentDate}
+              onChange={handleChange}
+              min={new Date().toISOString().split('T')[0]} // Min date today
+              max={new Date(new Date().setDate(new Date().getDate() + 30)).toISOString().split('T')[0]} // Max date 30 days from today
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="service" className="block text-sm font-medium text-gray-700">Service</label>
+            <select
+              id="service"
+              name="service"
+              value={formData.service}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              required
+            >
+              <option value="">Select Service</option>
+              <option value="AddictionTreatment">Addiction Treatment</option>
+              <option value="DrugRehab">Drug Rehab</option>
+              <option value="Programmes">Programmes</option>
+              <option value="Detoxification">Detoxification</option>
+              <option value="Therapies">Therapies</option>
+              <option value="Aftercare">Aftercare</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="additionalRequirement" className="block text-sm font-medium text-gray-700">Additional Requirements</label>
+            <textarea
+              id="additionalRequirement"
+              name="additionalRequirement"
+              value={formData.additionalRequirement}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              rows="4"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Book Appointment
+          </button>
+        </form>
       </div>
     </div>
   );
-};
-
-// Label and button styles
-const labelStyle = {
-  position: 'absolute',
-  top: '0.75rem',
-  left: '0.75rem',
-  fontSize: '1rem',
-  color: '#aaa',
-  pointerEvents: 'none',
-  transition: '0.3s ease',
-  transform: 'translateY(-1.25rem)',
-  backgroundColor: 'white',
-  padding: '0 0.25rem',
-  transformOrigin: 'top left'
-};
-
-const buttonStyle = {
-  backgroundColor: '#00b894',
-  color: 'white',
-  border: 'none',
-  padding: '0.75rem 1.5rem',
-  fontSize: '1rem',
-  borderRadius: '0.5rem',
-  cursor: 'pointer',
-  transition: 'background-color 0.3s ease',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center'
 };
 
 export default Appointment;
