@@ -44,8 +44,8 @@ export const router = createBrowserRouter([
       { path: '/treatment/details/:id', element: <TreatmentDetails /> }, 
       { path: '/login/user', element: <UserLogin /> },
       { path: '/login/admin', element: <AdminLogin /> },
-      { path: '/signup', element: <Signup /> }, 
-      {
+      { path: '/signup', element: <Signup /> },
+            {
         path: '/user/dashboard',
         element: (
           <PrivateRoute>

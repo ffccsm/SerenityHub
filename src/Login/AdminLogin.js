@@ -13,28 +13,43 @@ const AdminLogin = () => {
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
+
+    // Basic validation before submitting
+    if (!email || !password) {
+      toast.error('Email and Password are required');
+      return;
+    }
+
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      
+
       // Fetch user data from Firestore
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
         const userData = userDoc.data();
+        
+        // Check if the user is an admin
         if (userData.role === 'admin') {
-          toast.success('Admin logged in successfully');
+          toast.success('Admin logged in successfully', { position: 'top-center' });
           navigate('/admin/dashboard');
         } else {
           setError('Unauthorized access');
-          toast.error('You do not have admin access.');
+          toast.error('You do not have admin access.', { position: 'top-center' });
         }
       } else {
         setError('User document not found');
-        toast.error('User not found.');
+        toast.error('User document not found.', { position: 'top-center' });
       }
     } catch (error) {
-      setError(`Login failed: ${error.message}`);
-      toast.error(`Login failed: ${error.message}`);
+      // Distinguish between auth and other errors
+      if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+        setError('Invalid email or password');
+        toast.error('Invalid email or password', { position: 'top-center' });
+      } else {
+        setError(`Login failed: ${error.message}`);
+        toast.error(`Login failed: ${error.message}`, { position: 'top-center' });
+      }
     }
   };
 

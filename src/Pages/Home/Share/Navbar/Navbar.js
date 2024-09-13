@@ -25,16 +25,23 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user); // Set the logged-in user
-        // Set admin status based on user role
-        setIsAdmin(/* condition to check if user is an admin */);
+
+        // Fetch the user's ID token and check for admin claim
+        const tokenResult = await user.getIdTokenResult();
+        if (tokenResult.claims.admin) {
+          setIsAdmin(true); // Set admin status if the claim exists
+        } else {
+          setIsAdmin(false); // Not an admin
+        }
       } else {
         setUser(null);
-        setIsAdmin(false);
+        setIsAdmin(false); // Reset if no user
       }
     });
+
     return () => unsubscribe();
   }, [auth]);
 
