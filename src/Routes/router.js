@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
       { path: '/treatment/Detoxification', element: <Detoxification /> },
       { path: '/treatment/Therapies', element: <Therapies /> },
       { path: '/treatment/Aftercare', element: <Aftercare /> },
-      { path: '/treatment/details/:id', element: <TreatmentDetails /> }, 
+      { path: '/treatment/TreatmentDetails', element: <TreatmentDetails /> }, 
       { path: '/login/user', element: <UserLogin /> },
       { path: '/login/admin', element: <AdminLogin /> },
       { path: '/signup', element: <Signup /> },
