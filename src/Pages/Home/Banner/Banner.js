@@ -3,60 +3,46 @@ import { useMediaQuery } from 'react-responsive';
 
 const slides = [
     {
-        image: "//i.postimg.cc/xjv4cn6M/1-slide-1.jpg",
-        text: "বন্ধ ঘরের অন্ধকারে নয় আলোতে এসো, সারা পৃথিবী তোমাকে ডাকছে",
+        image: "//i.postimg.cc/j56x77Fy/Banner-2.jpg",
+        text: "আশা হারাবেন না, প্রতিটি দিন নতুন সম্ভাবনার সূচনা।",
         position: { top: "322px", left: "766px" }
     },
     {
-        image: "//i.postimg.cc/zvFtMFy0/1-slide-2.jpg",
-        text: "হাত বাড়ালেই জীবনের শুরু",
+        image: "//i.postimg.cc/nrHHYhyg/Banner-5.jpg",
+        text: "যখন জীবন কঠিন হয়, তখন সাহসী হওয়া জরুরি।",
         position: { top: "313px", left: "809px" }
     },
     {
-        image: "//i.postimg.cc/d1dSRYwM/1-slide-3.jpg",
-        text: "ভয় নয় ভালোবাসা, গোপনীয়তা নয় চিকিৎসা, মানসিক রোগ নয় সুস্থ জীবন",
+        image: "//i.postimg.cc/gk2zxrq6/Banner-8.jpg",
+        text: "অন্ধকার শেষে আলো আসবেই, শুধু বিশ্বাস রাখুন।",
         position: { top: "379px", left: "622px" }
     },
     {
-        image: "//i.postimg.cc/MHS3dFpn/1-slide-4.jpg",
-        text: "আসুন কথা বলি জীবনকে সহজ করে তুলি",
-        position: { top: "910px", left: "710px" }
+        image: "//i.postimg.cc/wjPj8HNR/Banner-1.jpg",
+        text: "ছোট ছোট পদক্ষেপই বড় পরিবর্তনের পথে নিয়ে যায়",
+        position: { top: "450px", left: "150px" } // Adjusted position for the 4th image
     }
 ];
 
 const Banner = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [showText, setShowText] = useState(false);
 
     const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
     const isTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1024px)' });
     const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' });
 
     const nextSlide = () => {
-        setShowText(false);
-        setTimeout(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
-        }, 100);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
     };
 
     const prevSlide = () => {
-        setShowText(false);
-        setTimeout(() => {
-            setCurrentIndex((prevIndex) => (prevIndex - 1 + slides.length) % slides.length);
-        }, 100);
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + slides.length) % slides.length);
     };
 
     useEffect(() => {
         const interval = setInterval(nextSlide, 5000);
         return () => clearInterval(interval);
     }, []);
-
-    useEffect(() => {
-        const textTimeout = setTimeout(() => {
-            setShowText(true);
-        }, 1000);
-        return () => clearTimeout(textTimeout);
-    }, [currentIndex]);
 
     return (
         <div
@@ -72,20 +58,19 @@ const Banner = () => {
                         alt={`slide-${currentIndex}`}
                         className="w-full h-full object-cover rounded-lg"
                     />
-                    {/* Overlay Text with Position and Delay */}
-                    {showText && (
-                        <div
-                            className="absolute text-white font-bold p-4 transition-opacity duration-500"
-                            style={{
-                                top: slides[currentIndex].position.top,
-                                left: slides[currentIndex].position.left,
-                                fontSize: isMobile ? '24px' : isTablet ? '32px' : '44px',
-                                width: isMobile ? '100%' : '459px',
-                            }}
-                        >
-                            {slides[currentIndex].text}
-                        </div>
-                    )}
+                    {/* Overlay Text with Position */}
+                    <div
+                        className="absolute text-white font-bold p-4 transition-opacity duration-500"
+                        style={{
+                            top: isMobile ? '320px' : slides[currentIndex].position.top, // Adjusted for mobile
+                            left: isMobile ? '10%' : slides[currentIndex].position.left,  // Center the text for mobile
+                            fontSize: isMobile ? '18px' : isTablet ? '32px' : '44px',
+                            width: isMobile ? '80%' : '459px', // Adjusted width for mobile
+                            textAlign: isMobile ? 'center' : 'left' // Centered text for mobile
+                        }}
+                    >
+                        {slides[currentIndex].text}
+                    </div>
                 </div>
 
                 {/* Left Arrow */}
@@ -110,10 +95,7 @@ const Banner = () => {
                 {slides.map((_, index) => (
                     <button
                         key={index}
-                        onClick={() => {
-                            setShowText(false);
-                            setCurrentIndex(index);
-                        }}
+                        onClick={() => setCurrentIndex(index)}
                         className={`w-4 h-4 rounded-full ${currentIndex === index ? 'bg-white' : 'bg-gray-400'}`}
                     />
                 ))}
