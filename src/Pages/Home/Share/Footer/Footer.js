@@ -41,7 +41,7 @@ const Footer = () => {
                         <Link to='/home' className="link link-hover text-lg md:text-xl mb-2">Home</Link>
                         <Link to='/appointment' className="link link-hover text-lg md:text-xl mb-2">Appointment</Link>
                         <Link to='/contact' className="link link-hover text-lg md:text-xl mb-2">Contact</Link>
-                        <Link to='/login/admin' className="link link-hover text-lg md:text-xl mb-2">Admin Login</Link>
+                        <Link to='/admin/dashboard' className="link link-hover text-lg md:text-xl mb-2">Admin Dashboard</Link>
                     </div>
                 </div>
 

@@ -3,6 +3,8 @@ import { collection, addDoc } from 'firebase/firestore';
 import { auth, db } from '../../../firebase'; // Ensure db is imported correctly
 import { useAuthState } from 'react-firebase-hooks/auth'; // Firebase hooks for easy user state management
 import { toast } from 'react-hot-toast';
+import DatePicker from 'react-datepicker'; // Import DatePicker component
+import 'react-datepicker/dist/react-datepicker.css'; // Import the CSS for DatePicker
 
 const Appointment = () => {
   const [user, loading] = useAuthState(auth); // Fetch authenticated user data
@@ -10,7 +12,7 @@ const Appointment = () => {
     name: '',
     email: '',
     phone: '',
-    appointmentDate: '',
+    appointmentDate: new Date(),
     service: '',
     additionalRequirement: '',
   });
@@ -20,9 +22,9 @@ const Appointment = () => {
       // Auto-fill user data when user is logged in
       setFormData((prevData) => ({
         ...prevData,
-        name: user.displayName || '', // Ensure displayName is set in user profile
+        name: user.displayName || '',
         email: user.email || '',
-        phone: '', // Ensure phone number is stored in user profile or add manual entry
+        phone: user.phone ||'', 
       }));
     }
   }, [user]);
@@ -35,12 +37,20 @@ const Appointment = () => {
     }));
   };
 
+  const handleDateChange = (date) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      appointmentDate: date,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await addDoc(collection(db, 'appointments'), {
         ...formData,
-        userId: user.uid,
+        appointmentDate: formData.appointmentDate.toISOString(), // Convert to ISO string
+        userId: user ? user.uid : null, // Include userId if logged in
         status: 'pending', // Default status as pending
       });
       toast.success('Appointment successfully submitted!');
@@ -48,7 +58,7 @@ const Appointment = () => {
         name: '',
         email: '',
         phone: '',
-        appointmentDate: '',
+        appointmentDate: new Date(),
         service: '',
         additionalRequirement: '',
       });
@@ -70,8 +80,10 @@ const Appointment = () => {
               id="name"
               name="name"
               value={formData.name}
-              readOnly
+              onChange={handleChange}
+              readOnly={!!user}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              required
             />
           </div>
           <div className="mb-4">
@@ -81,8 +93,10 @@ const Appointment = () => {
               id="email"
               name="email"
               value={formData.email}
-              readOnly
+              onChange={handleChange}
+              readOnly={!!user}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              required
             />
           </div>
           <div className="mb-4">
@@ -99,15 +113,14 @@ const Appointment = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="appointmentDate" className="block text-sm font-medium text-gray-700">Appointment Date</label>
-            <input
-              type="date"
-              id="appointmentDate"
-              name="appointmentDate"
-              value={formData.appointmentDate}
-              onChange={handleChange}
-              min={new Date().toISOString().split('T')[0]} // Min date today
-              max={new Date(new Date().setDate(new Date().getDate() + 30)).toISOString().split('T')[0]} // Max date 30 days from today
+            <DatePicker
+              selected={formData.appointmentDate}
+              onChange={handleDateChange}
+              minDate={new Date()} // Min date today
+              maxDate={new Date(new Date().setDate(new Date().getDate() + 30))} // Max date 30 days from today
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              dateFormat="yyyy/MM/dd"
+              placeholderText="Select a date"
               required
             />
           </div>

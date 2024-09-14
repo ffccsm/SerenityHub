@@ -106,13 +106,23 @@ const AdminDashboard = () => {
     setCurrentPage(page);
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   const renderAppointments = () => {
     return paginatedAppointments.map(app => (
       <tr key={app.id}>
         <td>{app.name}</td>
+        <td>{app.email}</td>
         <td>{app.service}</td>
-        <td>{app.appointmentDate}</td>
-        <td>{app.status}</td>
+        <td>{formatDate(app.appointmentDate)}</td>
+        <td>
+          <span className={`px-2 py-1 rounded-full ${app.status === 'pending' ? 'bg-yellow-300 text-yellow-800' : 'bg-green-300 text-green-800'}`}>
+            {app.status}
+          </span>
+        </td>
         <td>
           {app.status === 'pending' && (
             <>
@@ -130,8 +140,9 @@ const AdminDashboard = () => {
     return pendingAppointments.map(app => (
       <tr key={app.id}>
         <td>{app.name}</td>
+        <td>{app.email}</td>
         <td>{app.service}</td>
-        <td>{app.appointmentDate}</td>
+        <td>{formatDate(app.appointmentDate)}</td>
         <td>
           <button onClick={() => setShowApproveModal(app)} className="btn btn-primary mr-2">Approve</button>
           <button onClick={() => setShowDeclineModal(app)} className="btn btn-warning">Decline</button>
@@ -144,8 +155,9 @@ const AdminDashboard = () => {
     return confirmations.map(confirm => (
       <tr key={confirm.id}>
         <td>{confirm.name}</td>
+        <td>{confirm.email}</td>
         <td>{confirm.service}</td>
-        <td>{confirm.appointmentDate}</td>
+        <td>{formatDate(confirm.appointmentDate)}</td>
         <td>{confirm.status}</td>
       </tr>
     ));
@@ -214,6 +226,7 @@ const AdminDashboard = () => {
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Email</th>
                   <th>Service</th>
                   <th>Date</th>
                   <th>Status</th>
@@ -232,6 +245,7 @@ const AdminDashboard = () => {
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Email</th>
                   <th>Service</th>
                   <th>Date</th>
                   <th>Actions</th>
@@ -248,6 +262,7 @@ const AdminDashboard = () => {
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Email</th>
                   <th>Service</th>
                   <th>Date</th>
                   <th>Status</th>

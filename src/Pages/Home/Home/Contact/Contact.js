@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { GoMailRead } from 'react-icons/go';
+import { GoMail } from 'react-icons/go'; // Updated to GoMail
 import { BsFillTelephoneForwardFill } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
 import { FaTelegramPlane } from 'react-icons/fa';
@@ -28,7 +28,6 @@ const Contact = () => {
 
     return (
         <div className="mt-10">
-
             <div className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 mt-10 justify-center items-center px-10">
                 <Lottie animationData={contact} loop={true} className="lg:w-7/12 mx-auto rounded" />
                 <p>
@@ -67,7 +66,7 @@ const Contact = () => {
                             </form>
                             <div className="flex flex-col pt-4 text-white">
                                 <h1 className="text-3xl flex items-center my-3">
-                                    <GoMailRead className="mr-3" />
+                                    <GoMail className="mr-3" />  {/* Replaced with GoMail */}
                                     <span className="text-xl font-medium">help@SerenityHub.com</span>
                                 </h1>
                                 <h1 className="text-3xl flex items-center my-3">
