@@ -148,6 +148,8 @@ const Appointment = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
+                pattern="^\+?[1-9]\d{1,14}$"
+                title="Phone number should be in international format, e.g., +1234567890"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 required
               />
