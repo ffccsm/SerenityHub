@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 const UserDashboard = () => {
   const [user] = useAuthState(auth);
   const [appointments, setAppointments] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState(null); // For modal data
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -35,6 +36,16 @@ const UserDashboard = () => {
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  // Function to open modal with selected appointment details
+  const openModal = (appointment) => {
+    setSelectedAppointment(appointment);
+  };
+
+  // Function to close modal
+  const closeModal = () => {
+    setSelectedAppointment(null);
   };
 
   return (
@@ -68,7 +79,14 @@ const UserDashboard = () => {
                   <tbody>
                     {appointments.map((appointment) => (
                       <tr key={appointment.id}>
-                        <td className="border px-4 py-2">{appointment.service}</td>
+                        <td className="border px-4 py-2">
+                          <button
+                            className="text-blue-500 underline"
+                            onClick={() => openModal(appointment)} // Open modal on click
+                          >
+                            {appointment.service}
+                          </button>
+                        </td>
                         <td className="border px-4 py-2">{formatDate(appointment.appointmentDate)}</td>
                         <td className="border px-4 py-2">
                           <span className={`px-2 py-1 rounded-full ${appointment.status === 'pending' ? 'bg-yellow-300 text-yellow-800' : 'bg-green-300 text-green-800'}`}>
@@ -89,6 +107,29 @@ const UserDashboard = () => {
               ) : (
                 <p className="text-center text-gray-500">You have no appointments.</p>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Modal */}
+        {selectedAppointment && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+              {/* Cross (X) to close modal */}
+              <button
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                onClick={closeModal}
+              >
+                ✖️
+              </button>
+              <h2 className="text-xl font-bold mb-4">Appointment Details</h2>
+              <p><strong>Service:</strong> {selectedAppointment.service}</p>
+              <p><strong>Appointment Date:</strong> {formatDate(selectedAppointment.appointmentDate)}</p>
+              <p><strong>Name:</strong> {selectedAppointment.name}</p>
+              <p><strong>Email:</strong> {selectedAppointment.email}</p>
+              <p><strong>Phone:</strong> {selectedAppointment.phone}</p>
+              <p><strong>Additional Requirement:</strong> {selectedAppointment.additionalRequirement}</p>
+              <p><strong>Status:</strong> {selectedAppointment.status}</p>
             </div>
           </div>
         )}

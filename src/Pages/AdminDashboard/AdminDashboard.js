@@ -114,16 +114,16 @@ const AdminDashboard = () => {
   const renderAppointments = () => {
     return paginatedAppointments.map(app => (
       <tr key={app.id}>
-        <td>{app.name}</td>
-        <td>{app.email}</td>
-        <td>{app.service}</td>
-        <td>{formatDate(app.appointmentDate)}</td>
-        <td>
+        <td className="px-4 py-2">{app.name}</td>
+        <td className="px-4 py-2">{app.email}</td>
+        <td className="px-4 py-2">{app.service}</td>
+        <td className="px-4 py-2">{formatDate(app.appointmentDate)}</td>
+        <td className="px-4 py-2">
           <span className={`px-2 py-1 rounded-full ${app.status === 'pending' ? 'bg-yellow-300 text-yellow-800' : 'bg-green-300 text-green-800'}`}>
             {app.status}
           </span>
         </td>
-        <td>
+        <td className="px-4 py-2">
           {app.status === 'pending' && (
             <>
               <button onClick={() => setShowApproveModal(app)} className="btn btn-primary mr-2">Approve</button>
@@ -139,11 +139,11 @@ const AdminDashboard = () => {
   const renderPendingAppointments = () => {
     return pendingAppointments.map(app => (
       <tr key={app.id}>
-        <td>{app.name}</td>
-        <td>{app.email}</td>
-        <td>{app.service}</td>
-        <td>{formatDate(app.appointmentDate)}</td>
-        <td>
+        <td className="px-4 py-2">{app.name}</td>
+        <td className="px-4 py-2">{app.email}</td>
+        <td className="px-4 py-2">{app.service}</td>
+        <td className="px-4 py-2">{formatDate(app.appointmentDate)}</td>
+        <td className="px-4 py-2">
           <button onClick={() => setShowApproveModal(app)} className="btn btn-primary mr-2">Approve</button>
           <button onClick={() => setShowDeclineModal(app)} className="btn btn-warning">Decline</button>
         </td>
@@ -154,11 +154,11 @@ const AdminDashboard = () => {
   const renderConfirmations = () => {
     return confirmations.map(confirm => (
       <tr key={confirm.id}>
-        <td>{confirm.name}</td>
-        <td>{confirm.email}</td>
-        <td>{confirm.service}</td>
-        <td>{formatDate(confirm.appointmentDate)}</td>
-        <td>{confirm.status}</td>
+        <td className="px-4 py-2">{confirm.name}</td>
+        <td className="px-4 py-2">{confirm.email}</td>
+        <td className="px-4 py-2">{confirm.service}</td>
+        <td className="px-4 py-2">{formatDate(confirm.appointmentDate)}</td>
+        <td className="px-4 py-2">{confirm.status}</td>
       </tr>
     ));
   };
@@ -166,10 +166,10 @@ const AdminDashboard = () => {
   const renderAllUsers = () => {
     return users.map(user => (
       <tr key={user.id}>
-        <td>{user.name}</td>
-        <td>{user.email}</td>
-        <td>{user.role}</td>
-        <td>
+        <td className="px-4 py-2">{user.name}</td>
+        <td className="px-4 py-2">{user.email}</td>
+        <td className="px-4 py-2">{user.role}</td>
+        <td className="px-4 py-2">
           {user.role !== 'admin' && (
             <button onClick={() => handleMakeAdmin(user.id)} className="btn btn-info mr-2">Make Admin</button>
           )}
@@ -186,14 +186,14 @@ const AdminDashboard = () => {
         <button
           key={i}
           onClick={() => handlePageChange(i)}
-          className={`btn ${currentPage === i ? 'btn-primary' : 'btn-secondary'} mr-2`}
+          className={`px-4 py-2 mx-1 rounded-lg ${currentPage === i ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-blue-400`}
         >
           {i}
         </button>
       );
     }
     return (
-      <div className="mt-4">
+      <div className="mt-4 flex justify-center">
         {pages}
       </div>
     );
@@ -202,7 +202,7 @@ const AdminDashboard = () => {
   return (
     <div className="flex">
       <div className="w-1/4 bg-gray-200 p-4">
-        <h1 className="text-xl font-bold mb-4">Admin Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
         <ul className="space-y-2">
           <li>
             <button onClick={() => setSelectedSection('allAppointments')} className={`w-full py-2 px-4 text-left ${selectedSection === 'allAppointments' ? 'bg-blue-500 text-white' : 'bg-white'}`}>All Appointments</button>
@@ -224,13 +224,13 @@ const AdminDashboard = () => {
             <h2 className="text-2xl font-bold mb-4">All Appointments</h2>
             <table className="min-w-full bg-white border border-gray-200">
               <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Service</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Email</th>
+                  <th className="px-4 py-2">Service</th>
+                  <th className="px-4 py-2">Date</th>
+                  <th className="px-4 py-2">Status</th>
+                  <th className="px-4 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody>{renderAppointments()}</tbody>
@@ -243,12 +243,12 @@ const AdminDashboard = () => {
             <h2 className="text-2xl font-bold mb-4">Pending Appointments</h2>
             <table className="min-w-full bg-white border border-gray-200">
               <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Service</th>
-                  <th>Date</th>
-                  <th>Actions</th>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Email</th>
+                  <th className="px-4 py-2">Service</th>
+                  <th className="px-4 py-2">Date</th>
+                  <th className="px-4 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody>{renderPendingAppointments()}</tbody>
@@ -260,12 +260,12 @@ const AdminDashboard = () => {
             <h2 className="text-2xl font-bold mb-4">Confirmations</h2>
             <table className="min-w-full bg-white border border-gray-200">
               <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Service</th>
-                  <th>Date</th>
-                  <th>Status</th>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Email</th>
+                  <th className="px-4 py-2">Service</th>
+                  <th className="px-4 py-2">Date</th>
+                  <th className="px-4 py-2">Status</th>
                 </tr>
               </thead>
               <tbody>{renderConfirmations()}</tbody>
@@ -277,11 +277,11 @@ const AdminDashboard = () => {
             <h2 className="text-2xl font-bold mb-4">All Users</h2>
             <table className="min-w-full bg-white border border-gray-200">
               <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Actions</th>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Email</th>
+                  <th className="px-4 py-2">Role</th>
+                  <th className="px-4 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody>{renderAllUsers()}</tbody>
@@ -292,17 +292,17 @@ const AdminDashboard = () => {
         {/* Approve Modal */}
         {showApproveModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-            <div className="bg-white p-6 rounded-md shadow-md">
+            <div className="bg-white p-6 rounded-md shadow-md max-w-sm w-full">
               <h3 className="text-xl font-semibold mb-4">Approve Appointment</h3>
               <p>Are you sure you want to approve this appointment?</p>
-              <div className="mt-4">
+              <div className="mt-4 flex justify-end space-x-4">
                 <button
                   onClick={() => handleApproveAppointment(showApproveModal.id)}
-                  className="btn btn-primary mr-2"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                 >
                   Yes
                 </button>
-                <button onClick={() => setShowApproveModal(false)} className="btn">
+                <button onClick={() => setShowApproveModal(false)} className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400">
                   No
                 </button>
               </div>
@@ -313,7 +313,7 @@ const AdminDashboard = () => {
         {/* Decline Modal */}
         {showDeclineModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-            <div className="bg-white p-6 rounded-md shadow-md">
+            <div className="bg-white p-6 rounded-md shadow-md max-w-sm w-full">
               <h3 className="text-xl font-semibold mb-4">Decline Appointment</h3>
               <textarea
                 value={declineReason}
@@ -321,14 +321,14 @@ const AdminDashboard = () => {
                 className="w-full p-2 border border-gray-300 rounded mb-4"
                 placeholder="Reason for declining"
               />
-              <div className="mt-4">
+              <div className="mt-4 flex justify-end space-x-4">
                 <button
                   onClick={() => handleDeclineAppointment(showDeclineModal.id)}
-                  className="btn btn-warning mr-2"
+                  className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
                 >
                   Decline
                 </button>
-                <button onClick={() => setShowDeclineModal(false)} className="btn">
+                <button onClick={() => setShowDeclineModal(false)} className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400">
                   Cancel
                 </button>
               </div>
@@ -339,17 +339,17 @@ const AdminDashboard = () => {
         {/* Delete Modal */}
         {showDeleteModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-            <div className="bg-white p-6 rounded-md shadow-md">
+            <div className="bg-white p-6 rounded-md shadow-md max-w-sm w-full">
               <h3 className="text-xl font-semibold mb-4">Delete Appointment</h3>
               <p>Are you sure you want to delete this appointment?</p>
-              <div className="mt-4">
+              <div className="mt-4 flex justify-end space-x-4">
                 <button
                   onClick={() => handleDeleteAppointment(showDeleteModal.id)}
-                  className="btn btn-error mr-2"
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                 >
                   Yes
                 </button>
-                <button onClick={() => setShowDeleteModal(false)} className="btn">
+                <button onClick={() => setShowDeleteModal(false)} className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400">
                   No
                 </button>
               </div>
