@@ -84,9 +84,9 @@ const Navbar = () => {
       {user ? (
         <>
           {isAdmin ? (
-            <li><Link to='/admin/dashboard' className="btn btn-secondary">Admin Dashboard</Link></li>
+            <li><Link to='/admin/dashboard' className="btn btn-secondary">Dashboard</Link></li>
           ) : (
-            <li><Link to='/user/dashboard' className="btn btn-secondary">User Dashboard</Link></li>
+            <li><Link to='/user/dashboard' className="btn btn-secondary">Dashboard</Link></li>
           )}
           <li>
             <button onClick={handleSignOut} className="btn btn-primary">Sign Out</button>

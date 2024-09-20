@@ -3,13 +3,15 @@ import { collection, addDoc } from 'firebase/firestore';
 import { auth, db } from '../../../firebase'; 
 import { useAuthState } from 'react-firebase-hooks/auth'; 
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom'; // Change to useNavigate
-import DatePicker from 'react-datepicker'; // Import DatePicker component
-import 'react-datepicker/dist/react-datepicker.css'; // Import the CSS for DatePicker
-import 'daisyui'; // Import Daisy UI if not already imported
+import { useNavigate } from 'react-router-dom'; 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import 'daisyui';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const Appointment = () => {
-  const [user, loading] = useAuthState(auth); // Fetch authenticated user data
+  const [user, loading] = useAuthState(auth);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,18 +21,18 @@ const Appointment = () => {
     additionalRequirement: '',
   });
 
-  const [showPopup, setShowPopup] = useState(false); // Popup state
-  const navigate = useNavigate(); // Change to useNavigate
+  const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user && !loading) {
-      setShowPopup(true); // Show popup if user is not logged in
+      setShowPopup(true);
     } else if (user) {
       setFormData((prevData) => ({
         ...prevData,
         name: user.displayName || '',
         email: user.email || '',
-        phone: user.phone ||'', 
+        phone: user.phone || '', 
       }));
     }
   }, [user, loading]);
@@ -40,6 +42,13 @@ const Appointment = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handlePhoneChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      phone: value,
     }));
   };
 
@@ -55,9 +64,9 @@ const Appointment = () => {
     try {
       await addDoc(collection(db, 'appointments'), {
         ...formData,
-        appointmentDate: formData.appointmentDate.toISOString(), // Convert to ISO string
-        userId: user ? user.uid : null, // Include userId if logged in
-        status: 'pending', // Default status as pending
+        appointmentDate: formData.appointmentDate.toISOString(),
+        userId: user ? user.uid : null,
+        status: 'pending',
       });
       toast.success('Appointment successfully submitted!');
       setFormData({
@@ -76,7 +85,7 @@ const Appointment = () => {
 
   const handlePopupClose = () => {
     setShowPopup(false);
-    navigate('/home'); // Redirect to home if popup is closed
+    navigate('/home');
   };
 
   return (
@@ -88,7 +97,7 @@ const Appointment = () => {
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
               onClick={handlePopupClose}
             >
-              &#x2715; {/* Unicode for the X symbol */}
+              &#x2715;
             </button>
             <h3 className="text-lg font-semibold mb-4">Login Required</h3>
             <p className="mb-4">You need to log in to book an appointment.</p>
@@ -142,16 +151,24 @@ const Appointment = () => {
             </div>
             <div className="mb-4">
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
+              <PhoneInput
+                country={'bd'} // Default to Bangladesh
                 value={formData.phone}
-                onChange={handleChange}
-                pattern="^\+?[1-9]\d{1,14}$"
-                title="Phone number should be in international format, e.g., +1234567890"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
+                onChange={handlePhoneChange}
+                inputStyle={{
+                  width: 'calc(100% - 60px)',  // Give space between the input and flag
+                  padding: '12px',
+                  paddingLeft: '55px',  // Adjust to push text further from the flag
+                  borderRadius: '6px',
+                  border: '1px solid #D1D5DB', 
+                }}
+                buttonStyle={{
+                  border: '1px solid #D1D5DB',
+                  borderRadius: '6px 0 0 6px', 
+                  marginRight: '10px', // Add margin between flag dropdown and phone input
+                }}
+                enableSearch={true}
+                placeholder="Enter your phone number"
               />
             </div>
             <div className="mb-4">
@@ -159,8 +176,8 @@ const Appointment = () => {
               <DatePicker
                 selected={formData.appointmentDate}
                 onChange={handleDateChange}
-                minDate={new Date()} // Min date today
-                maxDate={new Date(new Date().setDate(new Date().getDate() + 30))} // Max date 30 days from today
+                minDate={new Date()}
+                maxDate={new Date(new Date().setDate(new Date().getDate() + 30))}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 dateFormat="yyyy/MM/dd"
                 placeholderText="Select a date"
