@@ -42,6 +42,7 @@ const Footer = () => {
                         <Link to='/appointment' className="link link-hover text-lg md:text-xl mb-2">Appointment</Link>
                         <Link to='/contact' className="link link-hover text-lg md:text-xl mb-2">Contact</Link>
                         <Link to='/admin/dashboard' className="link link-hover text-lg md:text-xl mb-2">Admin Dashboard</Link>
+                        <Link to='treatment/TreatmentDetails' className="link link-hover text-lg md:text-xl mb-2">Our Packages </Link>
                     </div>
                 </div>
 
@@ -54,6 +55,7 @@ const Footer = () => {
                         <Link to='/treatment/programmes' className="link link-hover text-lg md:text-xl mb-2">Programmes</Link>
                         <Link to='/treatment/therapies' className="link link-hover text-lg md:text-xl mb-2">Therapies</Link>
                         <Link to='/treatment/aftercare' className="link link-hover text-lg md:text-xl mb-2">Aftercare</Link>
+                        
                     </div>
                 </div>
 
