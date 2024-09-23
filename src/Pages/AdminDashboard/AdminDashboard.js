@@ -8,13 +8,13 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [pendingAppointments, setPendingAppointments] = useState([]);
   const [confirmations, setConfirmations] = useState([]);
-  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [declineReason, setDeclineReason] = useState('');
   const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,7 +113,7 @@ const AdminDashboard = () => {
 
   const renderAppointments = () => {
     return paginatedAppointments.map(app => (
-      <tr key={app.id}>
+      <tr key={app.id} className={`hover:bg-gray-100 ${app.status === 'pending' ? 'bg-yellow-50' : 'bg-green-50'}`}>
         <td className="px-4 py-2">{app.name}</td>
         <td className="px-4 py-2">{app.email}</td>
         <td className="px-4 py-2">{app.service}</td>
@@ -123,11 +123,12 @@ const AdminDashboard = () => {
             {app.status}
           </span>
         </td>
-        <td className="px-4 py-2">
+        <td className="px-4 py-2 flex space-x-2">
+          <button onClick={() => setSelectedAppointment(app)} className="btn btn-info">View</button>
           {app.status === 'pending' && (
             <>
-              <button onClick={() => setShowApproveModal(app)} className="btn btn-primary mr-2">Approve</button>
-              <button onClick={() => setShowDeclineModal(app)} className="btn btn-warning mr-2">Decline</button>
+              <button onClick={() => setShowApproveModal(app)} className="btn btn-primary">Approve</button>
+              <button onClick={() => setShowDeclineModal(app)} className="btn btn-warning">Decline</button>
             </>
           )}
           <button onClick={() => setShowDeleteModal(app)} className="btn btn-error">Delete</button>
@@ -165,13 +166,13 @@ const AdminDashboard = () => {
 
   const renderAllUsers = () => {
     return users.map(user => (
-      <tr key={user.id}>
+      <tr key={user.id} className="hover:bg-gray-100">
         <td className="px-4 py-2">{user.name}</td>
         <td className="px-4 py-2">{user.email}</td>
         <td className="px-4 py-2">{user.role}</td>
-        <td className="px-4 py-2">
+        <td className="px-4 py-2 flex space-x-2">
           {user.role !== 'admin' && (
-            <button onClick={() => handleMakeAdmin(user.id)} className="btn btn-info mr-2">Make Admin</button>
+            <button onClick={() => handleMakeAdmin(user.id)} className="btn btn-info">Make Admin</button>
           )}
           <button onClick={() => handleDeleteUser(user.id)} className="btn btn-error">Delete</button>
         </td>
@@ -201,28 +202,41 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex">
+      {/* Sidebar */}
       <div className="w-1/4 bg-gray-200 p-4">
         <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-        <ul className="space-y-2">
-          <li>
-            <button onClick={() => setSelectedSection('allAppointments')} className={`w-full py-2 px-4 text-left ${selectedSection === 'allAppointments' ? 'bg-blue-500 text-white' : 'bg-white'}`}>All Appointments</button>
-          </li>
-          <li>
-            <button onClick={() => setSelectedSection('pendingAppointments')} className={`w-full py-2 px-4 text-left ${selectedSection === 'pendingAppointments' ? 'bg-blue-500 text-white' : 'bg-white'}`}>Pending Appointments</button>
-          </li>
-          <li>
-            <button onClick={() => setSelectedSection('confirmations')} className={`w-full py-2 px-4 text-left ${selectedSection === 'confirmations' ? 'bg-blue-500 text-white' : 'bg-white'}`}>Confirmations</button>
-          </li>
-          <li>
-            <button onClick={() => setSelectedSection('allUsers')} className={`w-full py-2 px-4 text-left ${selectedSection === 'allUsers' ? 'bg-blue-500 text-white' : 'bg-white'}`}>All Users</button>
-          </li>
-        </ul>
+        <button
+          onClick={() => setSelectedSection('allAppointments')}
+          className={`block w-full text-left px-4 py-2 rounded ${selectedSection === 'allAppointments' ? 'bg-blue-500 text-white' : ''}`}
+        >
+          All Appointments
+        </button>
+        <button
+          onClick={() => setSelectedSection('pendingAppointments')}
+          className={`block w-full text-left px-4 py-2 rounded ${selectedSection === 'pendingAppointments' ? 'bg-blue-500 text-white' : ''}`}
+        >
+          Pending Appointments
+        </button>
+        <button
+          onClick={() => setSelectedSection('confirmations')}
+          className={`block w-full text-left px-4 py-2 rounded ${selectedSection === 'confirmations' ? 'bg-blue-500 text-white' : ''}`}
+        >
+          Confirmations
+        </button>
+        <button
+          onClick={() => setSelectedSection('allUsers')}
+          className={`block w-full text-left px-4 py-2 rounded ${selectedSection === 'allUsers' ? 'bg-blue-500 text-white' : ''}`}
+        >
+          All Users
+        </button>
       </div>
+
+      {/* Main content */}
       <div className="w-3/4 p-4">
         {selectedSection === 'allAppointments' && (
           <div>
             <h2 className="text-2xl font-bold mb-4">All Appointments</h2>
-            <table className="min-w-full bg-white border border-gray-200">
+            <table className="min-w-full bg-white border border-gray-200 shadow-md">
               <thead>
                 <tr className="bg-gray-100">
                   <th className="px-4 py-2">Name</th>
@@ -241,7 +255,7 @@ const AdminDashboard = () => {
         {selectedSection === 'pendingAppointments' && (
           <div>
             <h2 className="text-2xl font-bold mb-4">Pending Appointments</h2>
-            <table className="min-w-full bg-white border border-gray-200">
+            <table className="min-w-full bg-white border border-gray-200 shadow-md">
               <thead>
                 <tr className="bg-gray-100">
                   <th className="px-4 py-2">Name</th>
@@ -258,7 +272,7 @@ const AdminDashboard = () => {
         {selectedSection === 'confirmations' && (
           <div>
             <h2 className="text-2xl font-bold mb-4">Confirmations</h2>
-            <table className="min-w-full bg-white border border-gray-200">
+            <table className="min-w-full bg-white border border-gray-200 shadow-md">
               <thead>
                 <tr className="bg-gray-100">
                   <th className="px-4 py-2">Name</th>
@@ -275,7 +289,7 @@ const AdminDashboard = () => {
         {selectedSection === 'allUsers' && (
           <div>
             <h2 className="text-2xl font-bold mb-4">All Users</h2>
-            <table className="min-w-full bg-white border border-gray-200">
+            <table className="min-w-full bg-white border border-gray-200 shadow-md">
               <thead>
                 <tr className="bg-gray-100">
                   <th className="px-4 py-2">Name</th>
@@ -351,6 +365,28 @@ const AdminDashboard = () => {
                 </button>
                 <button onClick={() => setShowDeleteModal(false)} className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400">
                   No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Appointment Details Modal */}
+        {selectedAppointment && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
+            <div className="bg-white p-6 rounded-md shadow-md max-w-sm w-full">
+              <h3 className="text-xl font-semibold mb-4">Appointment Details</h3>
+              <p><strong>Name:</strong> {selectedAppointment.name}</p>
+              <p><strong>Email:</strong> {selectedAppointment.email}</p>
+              <p><strong>Service:</strong> {selectedAppointment.service}</p>
+              <p><strong>Date:</strong> {formatDate(selectedAppointment.appointmentDate)}</p>
+              <p><strong>Status:</strong> {selectedAppointment.status}</p>
+              {selectedAppointment.declineReason && (
+                <p><strong>Decline Reason:</strong> {selectedAppointment.declineReason}</p>
+              )}
+              <div className="mt-4 flex justify-end space-x-4">
+                <button onClick={() => setSelectedAppointment(null)} className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400">
+                  Close
                 </button>
               </div>
             </div>
