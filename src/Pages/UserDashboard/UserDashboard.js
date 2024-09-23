@@ -166,6 +166,7 @@ const UserDashboard = () => {
               <p><strong>Service:</strong> {selectedAppointment.service}</p>
               <p><strong>Date:</strong> {formatDate(selectedAppointment.appointmentDate)}</p>
               <p><strong>Status:</strong> {selectedAppointment.status}</p>
+              <p><strong>Decline Reason:</strong> {selectedAppointment.declineReason}</p>
               <p><strong>Name:</strong> {selectedAppointment.name}</p>
               <p><strong>Email:</strong> {selectedAppointment.email}</p>
               <p><strong>Phone:</strong> {selectedAppointment.phone}</p>
