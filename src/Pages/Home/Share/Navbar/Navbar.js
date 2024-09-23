@@ -79,7 +79,7 @@ const Navbar = () => {
         )}
       </li>
       <li><Link to='/meet-our-team'>Meet Our Team</Link></li>
-      <li><Link to='/contact'>Contact Us</Link></li>
+      <li><Link to='/treatment/TreatmentDetails'>Packages</Link></li>
       <li><Link to='/about'>About Us</Link></li>
       {user ? (
         <>
