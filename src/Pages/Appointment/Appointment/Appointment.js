@@ -26,6 +26,8 @@ const Appointment = () => {
     phone: '',
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (user) {
       setFormData({
@@ -34,11 +36,16 @@ const Appointment = () => {
         phone: '',
       });
     } else if (!loading) {
+    
       setShowPopup(true);
     }
   }, [user, loading]);
 
   const handleBookAppointment = (service) => {
+    if (!user) {
+      setShowPopup(true); 
+      return;
+    }
     setSelectedService(service);
     setShowPopup(true);
   };
@@ -65,7 +72,55 @@ const Appointment = () => {
 
   const handlePopupClose = () => {
     setShowPopup(false);
+    if (!user) {
+      navigate('/home'); 
+    }
   };
+
+  const handleLoginRedirect = () => {
+    navigate('/login/user'); // Redirect to login page
+  };
+
+  const handleSignUpRedirect = () => {
+    navigate('/signup'); // Redirect to signup page
+  };
+
+
+  if (!user) {
+    return (
+      <>
+        {showPopup && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-96 relative">
+              <button
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                onClick={handlePopupClose}
+              >
+                &#x2715;
+              </button>
+              <h3 className="text-2xl font-bold text-center mb-4">
+                Please Login for Appointment
+              </h3>
+              <div className="flex justify-between">
+                <button
+                  className="btn btn-primary w-5/12" 
+                  onClick={handleLoginRedirect}
+                >
+                  Login
+                </button>
+                <button
+                  className="btn btn-secondary w-5/12" 
+                  onClick={handleSignUpRedirect}
+                >
+                  Sign Up
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-gradient-to-br from-blue-50 to-blue-100 p-8">
@@ -110,8 +165,8 @@ const Appointment = () => {
           </div>
         </div>
 
-        {/* Popup Form */}
-        {showPopup && (
+        {/* Popup for Appointment Form */}
+        {showPopup && user && selectedService && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96 relative">
               <button
