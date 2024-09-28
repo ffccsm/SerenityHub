@@ -170,7 +170,6 @@ const UserDashboard = () => {
               <p><strong>Name:</strong> {selectedAppointment.name}</p>
               <p><strong>Email:</strong> {selectedAppointment.email}</p>
               <p><strong>Phone:</strong> {selectedAppointment.phone}</p>
-              <p><strong>Additional Requirement:</strong> {selectedAppointment.additionalRequirement}</p>
             </div>
           </div>
         )}

@@ -23,6 +23,7 @@
     "mongodb": "^6.6.0",
     "mongoose": "^8.6.0",
     "react": "^18.2.0",
+    "react-calendar": "^5.0.0",
     "react-datepicker": "^7.3.0",
     "react-day-picker": "^8.3.6",
     "react-dom": "^18.2.0",
