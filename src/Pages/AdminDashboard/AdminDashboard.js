@@ -371,27 +371,77 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Appointment Details Modal */}
-        {selectedAppointment && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-            <div className="bg-white p-6 rounded-md shadow-md max-w-sm w-full">
-              <h3 className="text-xl font-semibold mb-4">Appointment Details</h3>
-              <p><strong>Name:</strong> {selectedAppointment.name}</p>
-              <p><strong>Email:</strong> {selectedAppointment.email}</p>
-              <p><strong>Service:</strong> {selectedAppointment.service}</p>
-              <p><strong>Date:</strong> {formatDate(selectedAppointment.appointmentDate)}</p>
-              <p><strong>Status:</strong> {selectedAppointment.status}</p>
-              {selectedAppointment.declineReason && (
-                <p><strong>Decline Reason:</strong> {selectedAppointment.declineReason}</p>
-              )}
-              <div className="mt-4 flex justify-end space-x-4">
-                <button onClick={() => setSelectedAppointment(null)} className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400">
-                  Close
-                </button>
-              </div>
+{selectedAppointment && (
+  <div
+    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    onClick={() => setSelectedAppointment(null)} // Close modal on background click
+  >
+    <div
+      className="bg-white rounded-lg shadow-md max-w-md w-full p-5" // Reduced padding and max width
+      onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+    >
+      <h2 className="text-center text-xl font-semibold mb-4">Appointment Overview</h2>
+
+      {/* Card-Based Layout */}
+      <div className="space-y-2">
+        {/* Service Card */}
+        <div className="flex justify-between p-2 border-b border-gray-200">
+          <span className="font-medium text-gray-700">Service:</span>
+          <span className="text-gray-900">{selectedAppointment.service}</span>
+        </div>
+
+        {/* Date and Status Card */}
+        <div className="flex justify-between p-2 border-b border-gray-200">
+          <span className="font-medium text-gray-700">Date:</span>
+          <span className="text-gray-900">{formatDate(selectedAppointment.appointmentDate)}</span>
+        </div>
+        <div className="flex justify-between p-2 border-b border-gray-200">
+          <span className="font-medium text-gray-700">Status:</span>
+          <span className={`text-gray-900`}>{selectedAppointment.status}</span>
+        </div>
+
+        {/* User Information Card */}
+        <div className="p-2 border-b border-gray-200">
+          <h3 className="font-medium text-gray-700 mb-1">User Information:</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="flex flex-col">
+              <span className="text-gray-600">Name:</span>
+              <span className="text-gray-900">{selectedAppointment.name}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-gray-600">Email:</span>
+              <span className="text-gray-900">{selectedAppointment.email}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-gray-600">Phone:</span>
+              <span className="text-gray-900">{selectedAppointment.phone}</span>
             </div>
           </div>
+        </div>
+
+        {/* Decline Reason Card */}
+        {selectedAppointment.declineReason && (
+          <div className="p-2 border-t border-gray-200 bg-red-50">
+            <h3 className="font-medium text-red-600 mb-1">Decline Reason:</h3>
+            <p className="text-red-800">{selectedAppointment.declineReason}</p>
+          </div>
         )}
+      </div>
+
+      {/* Footer with Close Button */}
+      <div className="mt-4 flex justify-center">
+        <button
+          className="btn btn-primary"
+          onClick={() => setSelectedAppointment(null)} // Close modal
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+        
       </div>
     </div>
   );
