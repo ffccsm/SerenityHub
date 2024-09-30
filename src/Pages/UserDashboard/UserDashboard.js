@@ -152,27 +152,84 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        {/* Modal for Appointment Details */}
         {selectedAppointment && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
-              <button
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                onClick={closeModal}
-              >
-                ✖️
-              </button>
-              <h2 className="text-xl font-bold mb-4">Appointment Details</h2>
-              <p><strong>Service:</strong> {selectedAppointment.service}</p>
-              <p><strong>Date:</strong> {formatDate(selectedAppointment.appointmentDate)}</p>
-              <p><strong>Status:</strong> {selectedAppointment.status}</p>
-              <p><strong>Decline Reason:</strong> {selectedAppointment.declineReason}</p>
-              <p><strong>Name:</strong> {selectedAppointment.name}</p>
-              <p><strong>Email:</strong> {selectedAppointment.email}</p>
-              <p><strong>Phone:</strong> {selectedAppointment.phone}</p>
+  <div
+    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    onClick={closeModal} 
+  >
+    <div
+      className="bg-white rounded-2xl shadow-xl max-w-xl w-full p-8"
+      onClick={(e) => e.stopPropagation()} 
+    >
+      <h2 className="text-center text-2xl font-semibold mb-6 text-gray-700">
+        Appointment Overview
+      </h2>
+
+      {/* Minimalist Card-Based Layout */}
+      <div className="space-y-4">
+        {/* Service Card */}
+        <div className="bg-gray-50 rounded-lg p-4">
+          <h3 className="text-lg font-medium text-gray-600 mb-1">Service</h3>
+          <p className="text-gray-900">{selectedAppointment.service}</p>
+        </div>
+
+        {/* Date and Status in One Card */}
+        <div className="bg-gray-50 rounded-lg p-4 grid grid-cols-2 gap-4">
+          <div className="flex flex-col">
+            <h3 className="text-lg font-medium text-gray-600 mb-1">Date</h3>
+            <p className="text-gray-900">{formatDate(selectedAppointment.appointmentDate)}</p>
+          </div>
+          <div className="flex flex-col">
+            <h3 className="text-lg font-medium text-gray-600 mb-1">Status</h3>
+            <p className={`font-semibold ${getStatusClass(selectedAppointment.status)}`}>
+              {selectedAppointment.status}
+            </p>
+          </div>
+        </div>
+
+        {/* User Info Card */}
+        <div className="bg-gray-50 rounded-lg p-4">
+          <h3 className="text-lg font-medium text-gray-600 mb-1">User Information</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex flex-col">
+              <span className="text-gray-600">Name</span>
+              <span className="text-gray-900">{selectedAppointment.name}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-gray-600">Email</span>
+              <span className="text-gray-900">{selectedAppointment.email}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-gray-600">Phone</span>
+              <span className="text-gray-900">{selectedAppointment.phone}</span>
             </div>
           </div>
+        </div>
+
+        {/* Decline Reason Card */}
+        {selectedAppointment.declineReason && (
+          <div className="bg-red-50 rounded-lg p-4">
+            <h3 className="text-lg font-medium text-red-600 mb-1">Decline Reason</h3>
+            <p className="text-red-900">{selectedAppointment.declineReason}</p>
+          </div>
         )}
+      </div>
+
+      {/* Footer with Close Button */}
+      <div className="mt-6 flex justify-center">
+        <button
+          className="btn btn-primary"
+          onClick={closeModal}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
       </div>
     </div>
   );
