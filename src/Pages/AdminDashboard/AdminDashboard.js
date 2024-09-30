@@ -112,7 +112,14 @@ const AdminDashboard = () => {
   };
 
   const renderAppointments = () => {
-    return paginatedAppointments.map(app => (
+    // Sort appointments to display pending ones first
+    const sortedAppointments = [...paginatedAppointments].sort((a, b) => {
+      if (a.status === 'pending' && b.status !== 'pending') return -1; // a comes before b
+      if (a.status !== 'pending' && b.status === 'pending') return 1; // b comes before a
+      return 0; // maintain original order for others
+    });
+  
+    return sortedAppointments.map(app => (
       <tr key={app.id} className={`hover:bg-gray-100 ${app.status === 'pending' ? 'bg-yellow-50' : 'bg-green-50'}`}>
         <td className="px-4 py-2">{app.name}</td>
         <td className="px-4 py-2">{app.email}</td>
@@ -136,6 +143,7 @@ const AdminDashboard = () => {
       </tr>
     ));
   };
+  
 
   const renderPendingAppointments = () => {
     return pendingAppointments.map(app => (
@@ -170,6 +178,7 @@ const AdminDashboard = () => {
         <td className="px-4 py-2">{user.name}</td>
         <td className="px-4 py-2">{user.email}</td>
         <td className="px-4 py-2">{user.role}</td>
+        
         <td className="px-4 py-2 flex space-x-2">
           {user.role !== 'admin' && (
             <button onClick={() => handleMakeAdmin(user.id)} className="btn btn-info">Make Admin</button>
@@ -269,6 +278,7 @@ const AdminDashboard = () => {
             </table>
           </div>
         )}
+      
         {selectedSection === 'confirmations' && (
           <div>
             <h2 className="text-2xl font-bold mb-4">Confirmations</h2>
