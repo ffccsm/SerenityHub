@@ -10,14 +10,16 @@ import 'react-calendar/dist/Calendar.css';
 const Appointment = () => {
   const [user, loading] = useAuthState(auth);
   const [selectedDate, setSelectedDate] = useState(new Date());
+
   const [services] = useState([
-    { name: 'Addiction Treatment', price: 99 },
-    { name: 'Drug Rehab', price: 79 },
-    { name: 'Programmes', price: 199 },
-    { name: 'Detoxification', price: 299 },
-    { name: 'Therapies', price: 149 },
-    { name: 'Aftercare', price: 129 },
+    { name: 'Addiction Treatment', price: 8999 },
+    { name: 'Drug Rehab', price: 8999 },
+    { name: 'Programmes', price: 8999 },
+    { name: 'Detoxification', price: 8999 },
+    { name: 'Therapies', price: 8999 },
+    { name: 'Aftercare', price: 8999 },
   ]);
+
   const [showPopup, setShowPopup] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [formData, setFormData] = useState({
@@ -36,14 +38,13 @@ const Appointment = () => {
         phone: '',
       });
     } else if (!loading) {
-    
       setShowPopup(true);
     }
   }, [user, loading]);
 
   const handleBookAppointment = (service) => {
     if (!user) {
-      setShowPopup(true); 
+      setShowPopup(true);
       return;
     }
     setSelectedService(service);
@@ -73,18 +74,22 @@ const Appointment = () => {
   const handlePopupClose = () => {
     setShowPopup(false);
     if (!user) {
-      navigate('/home'); 
+      navigate('/home');
     }
   };
 
   const handleLoginRedirect = () => {
-    navigate('/login/user'); // Redirect to login page
+    navigate('/login/user');
   };
 
   const handleSignUpRedirect = () => {
-    navigate('/signup'); // Redirect to signup page
+    navigate('/signup');
   };
 
+  const getDayClass = ({ date }) => {
+    const day = date.getDay();
+    return day === 6 || day === 0 ? 'weekend-day' : null;
+  };
 
   if (!user) {
     return (
@@ -103,13 +108,13 @@ const Appointment = () => {
               </h3>
               <div className="flex justify-between">
                 <button
-                  className="btn btn-primary w-5/12" 
+                  className="btn btn-primary w-5/12"
                   onClick={handleLoginRedirect}
                 >
                   Login
                 </button>
                 <button
-                  className="btn btn-secondary w-5/12" 
+                  className="btn btn-secondary w-5/12"
                   onClick={handleSignUpRedirect}
                 >
                   Sign Up
@@ -128,33 +133,36 @@ const Appointment = () => {
         <h2 className="text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-800">
           Book Your Appointment
         </h2>
-        
-        {/* Full-width Calendar */}
+
         <div className="mb-10">
-          <Calendar 
-            onChange={setSelectedDate} 
+          <Calendar
+            onChange={setSelectedDate}
             value={selectedDate}
-            className="rounded-xl shadow-lg border mx-auto"
+            className="custom-calendar rounded-xl shadow-lg border mx-auto"
+            tileClassName={getDayClass}
           />
         </div>
 
-        {/* Available Appointments */}
         <div className="mb-10">
           <h3 className="text-3xl font-semibold mb-6 text-center text-blue-600">
             Available Services on {selectedDate.toDateString()}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
-              <div 
-                key={service.name} 
+              <div
+                key={service.name}
                 className="bg-white bg-opacity-70 backdrop-filter backdrop-blur-lg rounded-xl p-6 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
               >
-                <h4 className="font-bold text-xl text-center text-gray-700">{service.name}</h4>
+                <h4 className="font-bold text-xl text-center text-gray-700">
+                  {service.name}
+                </h4>
                 <p className="text-gray-600 text-center mt-2">Spaces Available: 15</p>
-                <p className="text-gray-900 font-semibold text-center mt-2">Price: ${service.price}</p>
+                <p className="text-gray-900 font-semibold text-center mt-2">
+                  Price: {service.price} BDT
+                </p>
                 <div className="mt-6 text-center">
                   <button
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-2 px-6 rounded-full transition duration-300 hover:from-blue-600 hover:to-purple-600 shadow-lg"
+                    className="bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition duration-300 hover:bg-blue-800 shadow-lg"
                     onClick={() => handleBookAppointment(service)}
                   >
                     Book Appointment
@@ -165,7 +173,6 @@ const Appointment = () => {
           </div>
         </div>
 
-        {/* Popup for Appointment Form */}
         {showPopup && user && selectedService && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96 relative">
@@ -175,15 +182,16 @@ const Appointment = () => {
               >
                 &#x2715;
               </button>
-              
+
               <h3 className="text-center text-3xl font-bold mb-6 text-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-700">
                 {selectedService?.name}
               </h3>
-              
+
               <form onSubmit={handleSubmit}>
-                {/* Date */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">Appointment Date</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Appointment Date
+                  </label>
                   <input
                     type="text"
                     value={selectedDate.toDateString()}
@@ -192,9 +200,10 @@ const Appointment = () => {
                   />
                 </div>
 
-                {/* Name */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">Name</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Name
+                  </label>
                   <input
                     type="text"
                     value={formData.name}
@@ -203,9 +212,10 @@ const Appointment = () => {
                   />
                 </div>
 
-                {/* Email */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
                   <input
                     type="email"
                     value={formData.email}
@@ -214,9 +224,10 @@ const Appointment = () => {
                   />
                 </div>
 
-                {/* Phone */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">Phone</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Phone
+                  </label>
                   <input
                     type="text"
                     name="phone"
@@ -232,7 +243,7 @@ const Appointment = () => {
 
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-2 px-4 rounded-full w-full shadow-md hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+                  className="bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full shadow-md hover:bg-blue-800 transition-all duration-300"
                 >
                   SUBMIT
                 </button>
