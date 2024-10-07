@@ -79,7 +79,6 @@ const Navbar = () => {
         )}
       </li>
       <li><Link to='/meet-our-team'>Meet Our Team</Link></li>
-      <li><Link to='/treatment/TreatmentDetails'>Packages</Link></li>
       <li><Link to='/about'>About Us</Link></li>
       {user ? (
         <>
@@ -89,11 +88,11 @@ const Navbar = () => {
             <li><Link to='/user/dashboard' className="btn btn-secondary">Dashboard</Link></li>
           )}
           <li>
-            <button onClick={handleSignOut} className="btn btn-primary">Sign Out</button>
+            <button onClick={handleSignOut} className="btn btn-primary mx-1 rounded">Sign Out</button>
           </li>
         </>
       ) : (
-        <li><Link to='/login/user' className="btn btn-primary">User Login</Link></li>
+        <li><Link to='/login/user' className="btn btn-primary rounded ">User Login</Link></li>
       )}
     </>
   );
