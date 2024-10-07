@@ -12,7 +12,6 @@ import Programmes from '../Pages/treatment/Programmes';
 import Detoxification from '../Pages/treatment/Detoxification';
 import Therapies from '../Pages/treatment/Therapies';
 import Aftercare from '../Pages/treatment/Aftercare';
-import AppointmentsList from '../Pages/Appointment/Appointment/AppointmentsList';
 import UserLogin from '../Login/UserLogin'; // User login page
 import AdminLogin from '../Login/AdminLogin'; // Admin login page
 import Signup from '../Signup/Signup'; // Signup page
@@ -61,14 +60,7 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-      {
-        path: '/appointment/list',
-        element: (
-          <PrivateRoute>
-            <AppointmentsList /> 
-          </PrivateRoute>
-        ),
-      },
+      
     ],
   },
 ]);
