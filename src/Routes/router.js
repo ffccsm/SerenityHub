@@ -18,7 +18,7 @@ import Signup from '../Signup/Signup'; // Signup page
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import AdminRoute from '../PrivateRoute/AdminRoute'; // Route guard for admin
 import CustomError from '../MyComponent/CustomError'; // Custom error component
-import TreatmentDetails from '../Pages/treatment/TreatmentDetails'; // Treatment details page
+import Packages from '../Pages/treatment/Packages';
 import UserDashboard from '../Pages/UserDashboard/UserDashboard'; // User dashboard page
 import AdminDashboard from '../Pages/AdminDashboard/AdminDashboard'; // Admin dashboard page
 
@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
       { path: '/treatment/Detoxification', element: <Detoxification /> },
       { path: '/treatment/Therapies', element: <Therapies /> },
       { path: '/treatment/Aftercare', element: <Aftercare /> },
-      { path: '/treatment/TreatmentDetails', element: <TreatmentDetails /> }, 
+      { path: '/treatment/Packages', element: <Packages/> }, 
       { path: '/login/user', element: <UserLogin /> },
       { path: '/login/admin', element: <AdminLogin /> },
       { path: '/signup', element: <Signup /> },
