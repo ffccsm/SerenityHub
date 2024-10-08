@@ -42,7 +42,7 @@ const Footer = () => {
                         <Link to='/appointment' className="link link-hover text-lg md:text-xl mb-2">Appointment</Link>
                         <Link to='/contact' className="link link-hover text-lg md:text-xl mb-2">Contact</Link>
                         <Link to='/admin/dashboard' className="link link-hover text-lg md:text-xl mb-2">Admin Dashboard</Link>
-                        <Link to='treatment/TreatmentDetails' className="link link-hover text-lg md:text-xl mb-2">Our Packages </Link>
+                        <Link to='treatment/Packages' className="link link-hover text-lg md:text-xl mb-2">Our Packages </Link>
                     </div>
                 </div>
 
