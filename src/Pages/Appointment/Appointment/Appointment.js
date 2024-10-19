@@ -25,7 +25,7 @@ const Appointment = () => {
     email: '',
     phone: '',
   });
-
+  const [phoneError, setPhoneError] = useState(''); // State to track phone validation
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,8 +49,18 @@ const Appointment = () => {
     setShowPopup(true);
   };
 
+  const validatePhoneNumber = (phone) => {
+    const phoneRegex = /^\+?[0-9]{10,14}$/;
+    return phoneRegex.test(phone);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validatePhoneNumber(formData.phone)) {
+      setPhoneError('Please enter a valid phone number (10-14 digits, optional +).');
+      return;
+    }
+    setPhoneError('');
     try {
       await addDoc(collection(db, 'appointments'), {
         userId: user ? user.uid : null,
@@ -93,7 +103,7 @@ const Appointment = () => {
     <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gray-100">
       {/* Main Content */}
       <div className="max-w-7xl w-full flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-12">
-        
+
         {/* Calendar Section */}
         <div className="flex flex-col items-center w-full md:w-1/3 bg-white rounded-lg shadow-lg p-6 border border-gray-300">
           <h2 className="text-3xl font-semibold mb-6 text-blue-600">
@@ -104,7 +114,7 @@ const Appointment = () => {
             value={selectedDate}
             tileClassName={({ date }) =>
               date.toDateString() === new Date().toDateString()
-                ? 'bg-blue-100' 
+                ? 'bg-blue-100'
                 : getDayClass({ date })
             }
             minDate={new Date()}  // Disable past dates
@@ -195,9 +205,12 @@ const Appointment = () => {
                     setFormData({ ...formData, phone: e.target.value })
                   }
                   placeholder="Enter your phone number"
-                  className="w-full p-3 rounded-lg"
+                  className={`w-full p-3 rounded-lg ${phoneError ? 'border-red-500' : ''}`}
                   required
                 />
+                {phoneError && (
+                  <p className="text-red-500 text-sm mt-2">{phoneError}</p>
+                )}
               </div>
 
               <button
