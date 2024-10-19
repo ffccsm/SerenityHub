@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
 import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { FaEye, FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
 
 const AdminDashboard = () => {
   const [selectedSection, setSelectedSection] = useState('allAppointments');
@@ -130,16 +131,32 @@ const AdminDashboard = () => {
             {app.status}
           </span>
         </td>
-        <td className="px-4 py-2 flex space-x-2">
-          <button onClick={() => setSelectedAppointment(app)} className="btn btn-info">View</button>
-          {app.status === 'pending' && (
-            <>
-              <button onClick={() => setShowApproveModal(app)} className="btn btn-primary">Approve</button>
-              <button onClick={() => setShowDeclineModal(app)} className="btn btn-warning">Decline</button>
-            </>
-          )}
-          <button onClick={() => setShowDeleteModal(app)} className="btn btn-error">Delete</button>
-        </td>
+<td className="px-4 py-2 flex space-x-2">
+  {/* View Button with Icon */}
+  <button onClick={() => setSelectedAppointment(app)} className="btn btn-info">
+    <FaEye /> {/* View Icon */}
+  </button>
+
+  {app.status === 'pending' && (
+    <>
+      {/* Approve Button with Icon */}
+      <button onClick={() => setShowApproveModal(app)} className="btn btn-primary">
+        <FaCheck /> {/* Approve Icon */}
+      </button>
+
+      {/* Decline Button with Icon */}
+      <button onClick={() => setShowDeclineModal(app)} className="btn btn-warning">
+        <FaTimes /> {/* Decline Icon */}
+      </button>
+    </>
+  )}
+
+  {/* Delete Button with Icon */}
+  <button onClick={() => setShowDeleteModal(app)} className="btn btn-error">
+    <FaTrash /> {/* Delete Icon */}
+  </button>
+</td>
+
       </tr>
     ));
   };

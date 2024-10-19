@@ -10,7 +10,6 @@ import 'react-calendar/dist/Calendar.css';
 const Appointment = () => {
   const [user, loading] = useAuthState(auth);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
   const [services] = useState([
     { name: 'Addiction Treatment', price: 8999 },
     { name: 'Drug Rehab', price: 8999 },
@@ -19,7 +18,6 @@ const Appointment = () => {
     { name: 'Therapies', price: 8999 },
     { name: 'Aftercare', price: 8999 },
   ]);
-
   const [showPopup, setShowPopup] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [formData, setFormData] = useState({
@@ -88,170 +86,130 @@ const Appointment = () => {
 
   const getDayClass = ({ date }) => {
     const day = date.getDay();
-    return day === 6 || day === 0 ? 'weekend-day' : null;
+    return day === 6 || day === 0 ? 'bg-red-200 text-red-700' : 'text-gray-700'; // Highlight weekends
   };
 
-  if (!user) {
-    return (
-      <>
-        {showPopup && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-96 relative">
-              <button
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                onClick={handlePopupClose}
-              >
-                &#x2715;
-              </button>
-              <h3 className="text-2xl font-bold text-center mb-4">
-                Please Login for Appointment
-              </h3>
-              <div className="flex justify-between">
-                <button
-                  className="btn btn-primary w-5/12"
-                  onClick={handleLoginRedirect}
-                >
-                  Login
-                </button>
-                <button
-                  className="btn btn-secondary w-5/12"
-                  onClick={handleSignUpRedirect}
-                >
-                  Sign Up
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </>
-    );
-  }
-
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gradient-to-br from-blue-50 to-blue-100 p-8">
-      <div className="shadow-2xl rounded-xl p-8 w-full max-w-7xl mx-auto bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg">
-        <h2 className="text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-800">
-          Book Your Appointment
-        </h2>
-
-        <div className="mb-10">
+    <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gray-100">
+      {/* Main Content */}
+      <div className="max-w-7xl w-full flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-12">
+        
+        {/* Calendar Section */}
+        <div className="flex flex-col items-center w-full md:w-1/3 bg-white rounded-lg shadow-lg p-6 border border-gray-300">
+          <h2 className="text-3xl font-semibold mb-6 text-blue-600">
+            Select Date
+          </h2>
           <Calendar
             onChange={setSelectedDate}
             value={selectedDate}
-            className="custom-calendar rounded-xl shadow-lg border mx-auto"
-            tileClassName={getDayClass}
+            tileClassName={({ date }) =>
+              date.toDateString() === new Date().toDateString()
+                ? 'bg-blue-100' 
+                : getDayClass({ date })
+            }
+            minDate={new Date()}  // Disable past dates
+            className="rounded-lg border border-gray-300 shadow-md p-4 bg-gray-50"
           />
+          <div className="mt-4 text-lg text-gray-700">
+            Selected Date: <span className="font-bold text-blue-500">{selectedDate.toDateString()}</span>
+          </div>
         </div>
 
-        <div className="mb-10">
-          <h3 className="text-3xl font-semibold mb-6 text-center text-blue-600">
-            Available Services on {selectedDate.toDateString()}
+        {/* Services Section */}
+        <div className="w-full md:w-2/3">
+          <h3 className="text-3xl font-semibold mb-6 text-center text-gray-800">
+            Available Services
           </h3>
+
+          {/* Grid of Services */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
               <div
                 key={service.name}
-                className="bg-white bg-opacity-70 backdrop-filter backdrop-blur-lg rounded-xl p-6 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-8 hover:shadow-lg hover:scale-105 transition-transform cursor-pointer"
               >
-                <h4 className="font-bold text-xl text-center text-gray-700">
-                  {service.name}
-                </h4>
-                <p className="text-gray-600 text-center mt-2">Spaces Available: 15</p>
-                <p className="text-gray-900 font-semibold text-center mt-2">
-                  Price: {service.price} BDT
-                </p>
-                <div className="mt-6 text-center">
-                  <button
-                    className="bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition duration-300 hover:bg-blue-800 shadow-lg"
-                    onClick={() => handleBookAppointment(service)}
-                  >
-                    Book Appointment
-                  </button>
-                </div>
+                <h4 className="text-xl font-semibold text-gray-800">{service.name}</h4>
+                <p className="text-gray-600 mt-2">Spaces Available: 15</p>
+                <p className="text-lg text-blue-700 font-medium mt-2">Price: {service.price} BDT</p>
+                <button
+                  className="mt-4 bg-blue-600 text-white py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onClick={() => handleBookAppointment(service)}
+                >
+                  Book Now
+                </button>
               </div>
             ))}
           </div>
         </div>
-
-        {showPopup && user && selectedService && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-96 relative">
-              <button
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                onClick={handlePopupClose}
-              >
-                &#x2715;
-              </button>
-
-              <h3 className="text-center text-3xl font-bold mb-6 text-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-700">
-                {selectedService?.name}
-              </h3>
-
-              <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Appointment Date
-                  </label>
-                  <input
-                    type="text"
-                    value={selectedDate.toDateString()}
-                    readOnly
-                    className="input input-bordered w-full bg-gray-100 text-gray-600"
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    readOnly
-                    className="input input-bordered w-full bg-gray-100 text-gray-600"
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    readOnly
-                    className="input input-bordered w-full bg-gray-100 text-gray-600"
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Phone
-                  </label>
-                  <input
-                    type="text"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    pattern="\d*"
-                    maxLength="14"
-                    placeholder="Enter your phone number"
-                    className="input input-bordered w-full"
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full shadow-md hover:bg-blue-800 transition-all duration-300"
-                >
-                  SUBMIT
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Popup Modal */}
+      {showPopup && selectedService && (
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-50 animate-fadeInUp">
+          <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+            <button
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 z-10 p-2 rounded-full"
+              onClick={handlePopupClose}
+            >
+              ✕
+            </button>
+            <h3 className="text-center text-2xl font-bold mb-6">{selectedService.name}</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">Appointment Date</label>
+                <input
+                  type="text"
+                  value={selectedDate.toDateString()}
+                  readOnly
+                  className="w-full p-3 rounded-lg bg-gray-100"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">Name</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  readOnly
+                  className="w-full p-3 rounded-lg bg-gray-100"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  readOnly
+                  className="w-full p-3 rounded-lg bg-gray-100"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">Phone</label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
+                  placeholder="Enter your phone number"
+                  className="w-full p-3 rounded-lg"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Confirm Appointment
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
