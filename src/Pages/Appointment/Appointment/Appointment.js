@@ -57,7 +57,7 @@ const Appointment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validatePhoneNumber(formData.phone)) {
-      setPhoneError('Please enter a valid phone number (10-14 digits, optional +).');
+      setPhoneError('Please enter a valid phone number).');
       return;
     }
     setPhoneError('');
