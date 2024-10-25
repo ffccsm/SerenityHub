@@ -57,7 +57,7 @@ const Appointment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validatePhoneNumber(formData.phone)) {
-      setPhoneError('Please enter a valid phone number).');
+      setPhoneError('Please enter a valid phone number.');
       return;
     }
     setPhoneError('');
@@ -96,7 +96,18 @@ const Appointment = () => {
 
   const getDayClass = ({ date }) => {
     const day = date.getDay();
-    return day === 6 || day === 0 ? 'bg-red-200 text-red-700' : 'text-gray-700'; // Highlight weekends
+    return day === 6 || day === 0 ? 'bg-red-200 text-red-700' : 'text-gray-700';
+  };
+
+  const handleDateClick = (date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (date < today) {
+      toast.error('You cannot book an appointment for a past date.');
+    } else {
+      setSelectedDate(date);
+    }
   };
 
   return (
@@ -112,12 +123,12 @@ const Appointment = () => {
           <Calendar
             onChange={setSelectedDate}
             value={selectedDate}
+            onClickDay={handleDateClick}
             tileClassName={({ date }) =>
               date.toDateString() === new Date().toDateString()
                 ? 'bg-blue-100'
                 : getDayClass({ date })
             }
-            minDate={new Date()}  // Disable past dates
             className="rounded-lg border border-gray-300 shadow-md p-4 bg-gray-50"
           />
           <div className="mt-4 text-lg text-gray-700">
