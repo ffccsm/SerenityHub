@@ -19,13 +19,14 @@ const Appointment = () => {
     { name: 'Aftercare', price: 8999 },
   ]);
   const [showPopup, setShowPopup] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
   });
-  const [phoneError, setPhoneError] = useState(''); // State to track phone validation
+  const [phoneError, setPhoneError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,14 +36,12 @@ const Appointment = () => {
         email: user.email || '',
         phone: '',
       });
-    } else if (!loading) {
-      setShowPopup(true);
     }
   }, [user, loading]);
 
   const handleBookAppointment = (service) => {
     if (!user) {
-      setShowPopup(true);
+      setShowLoginPrompt(true);
       return;
     }
     setSelectedService(service);
@@ -81,9 +80,6 @@ const Appointment = () => {
 
   const handlePopupClose = () => {
     setShowPopup(false);
-    if (!user) {
-      navigate('/home');
-    }
   };
 
   const handleLoginRedirect = () => {
@@ -112,10 +108,7 @@ const Appointment = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gray-100">
-      {/* Main Content */}
       <div className="max-w-7xl w-full flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-12">
-
-        {/* Calendar Section */}
         <div className="flex flex-col items-center w-full md:w-1/3 bg-white rounded-lg shadow-lg p-6 border border-gray-300">
           <h2 className="text-3xl font-semibold mb-6 text-blue-600">
             Select Date
@@ -136,13 +129,10 @@ const Appointment = () => {
           </div>
         </div>
 
-        {/* Services Section */}
         <div className="w-full md:w-2/3">
           <h3 className="text-3xl font-semibold mb-6 text-center text-gray-800">
             Available Services
           </h3>
-
-          {/* Grid of Services */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
               <div
@@ -164,7 +154,6 @@ const Appointment = () => {
         </div>
       </div>
 
-      {/* Popup Modal */}
       {showPopup && selectedService && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-50 animate-fadeInUp">
           <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
@@ -212,9 +201,7 @@ const Appointment = () => {
                   type="text"
                   name="phone"
                   value={formData.phone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   placeholder="Enter your phone number"
                   className={`w-full p-3 rounded-lg ${phoneError ? 'border-red-500' : ''}`}
                   required
@@ -231,6 +218,37 @@ const Appointment = () => {
                 Confirm Appointment
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {showLoginPrompt && (
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-50 animate-fadeInUp">
+          <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <button
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 z-10 p-2 rounded-full"
+              onClick={() => setShowLoginPrompt(false)}
+            >
+              ✕
+            </button>
+            <h3 className="text-2xl font-bold mb-4 text-center">Please Log In</h3>
+            <p className="text-gray-600 text-center mb-6">
+              You need to log in to book an appointment.
+            </p>
+            <div className="flex space-x-4 justify-center">
+              <button
+                onClick={handleLoginRedirect}
+                className="bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-all"
+              >
+                Login
+              </button>
+              <button
+                onClick={handleSignUpRedirect}
+                className="bg-green-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-green-700 transition-all"
+              >
+                Sign Up
+              </button>
+            </div>
           </div>
         </div>
       )}
