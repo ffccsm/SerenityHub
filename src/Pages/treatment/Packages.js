@@ -5,11 +5,11 @@ import { FaClinicMedical, FaPrescriptionBottle, FaHeartbeat, FaCapsules, FaHands
 
 const services = [
   { name: 'Addiction Treatment', price: 'BDT 8999', description: 'A comprehensive approach to overcoming addiction.', icon: <FaPrescriptionBottle /> },
-  { name: 'Drug Rehab', price: 'BDT 8999', description: 'Effective rehabilitation programs to assist in recovery.', icon: <FaCapsules /> },
-  { name: 'Programmes', price: 'BDT 8999', description: 'Various tailored programs for personalized care.', icon: <FaHeartbeat /> },
-  { name: 'Detoxification', price: 'BDT 8999', description: 'Safe and supervised detox programs for a fresh start.', icon: <FaFirstAid /> },
-  { name: 'Therapies', price: 'BDT 8999', description: 'Individual and group therapy sessions to foster healing.', icon: <FaClinicMedical /> },
-  { name: 'Aftercare', price: 'BDT 8999', description: 'Ongoing support and care post-treatment to prevent relapse.', icon: <FaHandsHelping /> },
+  { name: 'Drug Rehab', price: 'BDT 7999', description: 'Effective rehabilitation programs to assist in recovery.', icon: <FaCapsules /> },
+  { name: 'Programmes', price: 'BDT 6999', description: 'Various tailored programs for personalized care.', icon: <FaHeartbeat /> },
+  { name: 'Detoxification', price: 'BDT 5999', description: 'Safe and supervised detox programs for a fresh start.', icon: <FaFirstAid /> },
+  { name: 'Therapies', price: 'BDT 4999', description: 'Individual and group therapy sessions to foster healing.', icon: <FaClinicMedical /> },
+  { name: 'Aftercare', price: 'BDT 3999', description: 'Ongoing support and care post-treatment to prevent relapse.', icon: <FaHandsHelping /> },
 ];
 
 const Packages = () => {
