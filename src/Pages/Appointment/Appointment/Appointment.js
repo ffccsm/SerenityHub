@@ -12,11 +12,11 @@ const Appointment = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [services] = useState([
     { name: 'Addiction Treatment', price: 8999 },
-    { name: 'Drug Rehab', price: 8999 },
-    { name: 'Programmes', price: 8999 },
-    { name: 'Detoxification', price: 8999 },
-    { name: 'Therapies', price: 8999 },
-    { name: 'Aftercare', price: 8999 },
+    { name: 'Drug Rehab', price: 7999 },
+    { name: 'Programmes', price: 6999 },
+    { name: 'Detoxification', price: 5999 },
+    { name: 'Therapies', price: 4999 },
+    { name: 'Aftercare', price: 3999 },
   ]);
   const [showPopup, setShowPopup] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
