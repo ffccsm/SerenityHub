@@ -58,18 +58,27 @@ const UserLogin = () => {
           </button>
         </form>
 
-        <div className="flex justify-between space-x-4 mt-4">
-          <button 
-            onClick={() => navigate('/signup')} 
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={() => navigate('/signup')}
             className="btn btn-outline w-1/2"
           >
             Signup
           </button>
-          <button 
-            onClick={() => navigate('/login/admin')} 
+          <button
+            onClick={() => navigate('/login/admin')}
             className="btn btn-outline w-1/2"
           >
             Admin Login
+          </button>
+        </div>
+
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => navigate('/reset-password')}
+            className="text-sm text-indigo-600 hover:underline"
+          >
+            Forgot Password?
           </button>
         </div>
       </div>
