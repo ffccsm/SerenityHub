@@ -119,7 +119,7 @@ const AdminDashboard = () => {
       if (a.status !== 'pending' && b.status === 'pending') return 1; // b comes before a
       return 0; // maintain original order for others
     });
-  
+
     return sortedAppointments.map(app => (
       <tr key={app.id} className={`hover:bg-gray-100 ${app.status === 'pending' ? 'bg-yellow-50' : 'bg-green-50'}`}>
         <td className="px-4 py-2">{app.name}</td>
@@ -131,36 +131,36 @@ const AdminDashboard = () => {
             {app.status}
           </span>
         </td>
-<td className="px-4 py-2 flex space-x-2">
-  {/* View Button with Icon */}
-  <button onClick={() => setSelectedAppointment(app)} className="btn btn-info">
-    <FaEye /> {/* View Icon */}
-  </button>
+        <td className="px-4 py-2 flex space-x-2">
+          {/* View Button with Icon */}
+          <button onClick={() => setSelectedAppointment(app)} className="btn btn-info">
+            <FaEye /> {/* View Icon */}
+          </button>
 
-  {app.status === 'pending' && (
-    <>
-      {/* Approve Button with Icon */}
-      <button onClick={() => setShowApproveModal(app)} className="btn btn-primary">
-        <FaCheck /> {/* Approve Icon */}
-      </button>
+          {app.status === 'pending' && (
+            <>
+              {/* Approve Button with Icon */}
+              <button onClick={() => setShowApproveModal(app)} className="btn btn-primary">
+                <FaCheck /> {/* Approve Icon */}
+              </button>
 
-      {/* Decline Button with Icon */}
-      <button onClick={() => setShowDeclineModal(app)} className="btn btn-warning">
-        <FaTimes /> {/* Decline Icon */}
-      </button>
-    </>
-  )}
+              {/* Decline Button with Icon */}
+              <button onClick={() => setShowDeclineModal(app)} className="btn btn-warning">
+                <FaTimes /> {/* Decline Icon */}
+              </button>
+            </>
+          )}
 
-  {/* Delete Button with Icon */}
-  <button onClick={() => setShowDeleteModal(app)} className="btn btn-error">
-    <FaTrash /> {/* Delete Icon */}
-  </button>
-</td>
+          {/* Delete Button with Icon */}
+          <button onClick={() => setShowDeleteModal(app)} className="btn btn-error">
+            <FaTrash /> {/* Delete Icon */}
+          </button>
+        </td>
 
       </tr>
     ));
   };
-  
+
 
   const renderPendingAppointments = () => {
     return pendingAppointments.map(app => (
@@ -195,7 +195,7 @@ const AdminDashboard = () => {
         <td className="px-4 py-2">{user.name}</td>
         <td className="px-4 py-2">{user.email}</td>
         <td className="px-4 py-2">{user.role}</td>
-        
+
         <td className="px-4 py-2 flex space-x-2">
           {user.role !== 'admin' && (
             <button onClick={() => handleMakeAdmin(user.id)} className="btn btn-info">Make Admin</button>
@@ -295,7 +295,7 @@ const AdminDashboard = () => {
             </table>
           </div>
         )}
-      
+
         {selectedSection === 'confirmations' && (
           <div>
             <h2 className="text-2xl font-bold mb-4">Confirmations</h2>
@@ -398,77 +398,81 @@ const AdminDashboard = () => {
           </div>
         )}
 
-{selectedAppointment && (
-  <div
-    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-    onClick={() => setSelectedAppointment(null)} // Close modal on background click
-  >
-    <div
-      className="bg-white rounded-lg shadow-md max-w-md w-full p-5" // Reduced padding and max width
-      onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
-    >
-      <h2 className="text-center text-xl font-semibold mb-4">Appointment Overview</h2>
+        {selectedAppointment && (
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            onClick={() => setSelectedAppointment(null)} // Close modal on background click
+          >
+            <div
+              className="bg-white rounded-lg shadow-md max-w-md w-full p-5" // Reduced padding and max width
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+            >
+              <h2 className="text-center text-xl font-semibold mb-4">Appointment Overview</h2>
 
-      {/* Card-Based Layout */}
-      <div className="space-y-2">
-        {/* Service Card */}
-        <div className="flex justify-between p-2 border-b border-gray-200">
-          <span className="font-medium text-gray-700">Service:</span>
-          <span className="text-gray-900">{selectedAppointment.service}</span>
-        </div>
+              {/* Card-Based Layout */}
+              <div className="space-y-2">
+                {/* Service Card */}
+                <div className="flex justify-between p-2 border-b border-gray-200">
+                  <span className="font-medium text-gray-700">Service:</span>
+                  <span className="text-gray-900">{selectedAppointment.service}</span>
+                </div>
 
-        {/* Date and Status Card */}
-        <div className="flex justify-between p-2 border-b border-gray-200">
-          <span className="font-medium text-gray-700">Date:</span>
-          <span className="text-gray-900">{formatDate(selectedAppointment.appointmentDate)}</span>
-        </div>
-        <div className="flex justify-between p-2 border-b border-gray-200">
-          <span className="font-medium text-gray-700">Status:</span>
-          <span className={`text-gray-900`}>{selectedAppointment.status}</span>
-        </div>
+                {/* Date and Status Card */}
+                <div className="flex justify-between p-2 border-b border-gray-200">
+                  <span className="font-medium text-gray-700">Date:</span>
+                  <span className="text-gray-900">{formatDate(selectedAppointment.appointmentDate)}</span>
+                </div>
+                <div className="flex justify-between p-2 border-b border-gray-200">
+                  <span className="font-medium text-gray-700">Status:</span>
+                  <span className={`text-gray-900`}>{selectedAppointment.status}</span>
+                </div>
 
-        {/* User Information Card */}
-        <div className="p-2 border-b border-gray-200">
-          <h3 className="font-medium text-gray-700 mb-1">User Information:</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <div className="flex flex-col">
-              <span className="text-gray-600">Name:</span>
-              <span className="text-gray-900">{selectedAppointment.name}</span>
+                {/* User Information Card */}
+                <div className="p-2 border-b border-gray-200">
+                  <h3 className="font-medium text-gray-700 mb-1">User Information:</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="flex flex-col">
+                      <span className="text-gray-600">Name:</span>
+                      <span className="text-gray-900">{selectedAppointment.name}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-gray-600">Email:</span>
+                      <span className="text-gray-900">{selectedAppointment.email}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-gray-600">Phone:</span>
+                      <span className="text-gray-900">{selectedAppointment.phone}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-gray-600">Selected Doctor</span>
+                      <span className="text-gray-900">{selectedAppointment.dcotor}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Decline Reason Card */}
+                {selectedAppointment.declineReason && (
+                  <div className="p-2 border-t border-gray-200 bg-red-50">
+                    <h3 className="font-medium text-red-600 mb-1">Decline Reason:</h3>
+                    <p className="text-red-800">{selectedAppointment.declineReason}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer with Close Button */}
+              <div className="mt-4 flex justify-center">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setSelectedAppointment(null)} // Close modal
+                >
+                  Close
+                </button>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="text-gray-600">Email:</span>
-              <span className="text-gray-900">{selectedAppointment.email}</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-gray-600">Phone:</span>
-              <span className="text-gray-900">{selectedAppointment.phone}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Decline Reason Card */}
-        {selectedAppointment.declineReason && (
-          <div className="p-2 border-t border-gray-200 bg-red-50">
-            <h3 className="font-medium text-red-600 mb-1">Decline Reason:</h3>
-            <p className="text-red-800">{selectedAppointment.declineReason}</p>
           </div>
         )}
-      </div>
 
-      {/* Footer with Close Button */}
-      <div className="mt-4 flex justify-center">
-        <button
-          className="btn btn-primary"
-          onClick={() => setSelectedAppointment(null)} // Close modal
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-)}
 
-        
       </div>
     </div>
   );

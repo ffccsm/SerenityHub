@@ -28,14 +28,14 @@ const UserDashboard = () => {
         const q = query(collection(db, 'appointments'), where('userId', '==', user.uid));
         const querySnapshot = await getDocs(q);
         const fetchedAppointments = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  
-      
+
+
         fetchedAppointments.sort((a, b) => {
           if (a.status === 'pending' && b.status !== 'pending') return -1;
           if (b.status === 'pending' && a.status !== 'pending') return 1;
-          return 0; 
+          return 0;
         });
-  
+
         setAppointments(fetchedAppointments);
       } catch (err) {
         setError('Failed to fetch appointments.');
@@ -45,7 +45,7 @@ const UserDashboard = () => {
         setLoading(false);
       }
     };
-  
+
     if (user) {
       fetchAppointments();
     }
@@ -107,7 +107,7 @@ const UserDashboard = () => {
               </button>
             </li>
 
-            
+
           </ul>
         </nav>
       </div>
@@ -153,80 +153,85 @@ const UserDashboard = () => {
         </div>
 
         {selectedAppointment && (
-  <div
-    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-    onClick={closeModal} 
-  >
-    <div
-      className="bg-white rounded-2xl shadow-xl max-w-xl w-full p-8"
-      onClick={(e) => e.stopPropagation()} 
-    >
-      <h2 className="text-center text-2xl font-semibold mb-6 text-gray-700">
-        Appointment Overview
-      </h2>
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            onClick={closeModal}
+          >
+            <div
+              className="bg-white rounded-2xl shadow-xl max-w-xl w-full p-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-center text-2xl font-semibold mb-6 text-gray-700">
+                Appointment Overview
+              </h2>
 
-      {/* Minimalist Card-Based Layout */}
-      <div className="space-y-4">
-        {/* Service Card */}
-        <div className="bg-gray-50 rounded-lg p-4">
-          <h3 className="text-lg font-medium text-gray-600 mb-1">Service</h3>
-          <p className="text-gray-900">{selectedAppointment.service}</p>
-        </div>
+              {/* Minimalist Card-Based Layout */}
+              <div className="space-y-4">
+                {/* Service Card */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-medium text-gray-600 mb-1">Service</h3>
+                  <p className="text-gray-900">{selectedAppointment.service}</p>
+                </div>
 
-        {/* Date and Status in One Card */}
-        <div className="bg-gray-50 rounded-lg p-4 grid grid-cols-2 gap-4">
-          <div className="flex flex-col">
-            <h3 className="text-lg font-medium text-gray-600 mb-1">Date</h3>
-            <p className="text-gray-900">{formatDate(selectedAppointment.appointmentDate)}</p>
-          </div>
-          <div className="flex flex-col">
-            <h3 className="text-lg font-medium text-gray-600 mb-1">Status</h3>
-            <p className={`font-semibold ${getStatusClass(selectedAppointment.status)}`}>
-              {selectedAppointment.status}
-            </p>
-          </div>
-        </div>
+                {/* Date and Status in One Card */}
+                <div className="bg-gray-50 rounded-lg p-4 grid grid-cols-2 gap-4">
+                  <div className="flex flex-col">
+                    <h3 className="text-lg font-medium text-gray-600 mb-1">Date</h3>
+                    <p className="text-gray-900">{formatDate(selectedAppointment.appointmentDate)}</p>
+                  </div>
+                  <div className="flex flex-col">
+                    <h3 className="text-lg font-medium text-gray-600 mb-1">Status</h3>
+                    <p className={`font-semibold ${getStatusClass(selectedAppointment.status)}`}>
+                      {selectedAppointment.status}
+                    </p>
+                  </div>
+                </div>
 
-        {/* User Info Card */}
-        <div className="bg-gray-50 rounded-lg p-4">
-          <h3 className="text-lg font-medium text-gray-600 mb-1">User Information</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex flex-col">
-              <span className="text-gray-600">Name</span>
-              <span className="text-gray-900">{selectedAppointment.name}</span>
+                {/* User Info Card */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-medium text-gray-600 mb-1">User Information</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col">
+                      <span className="text-gray-600">Name</span>
+                      <span className="text-gray-900">{selectedAppointment.name}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-gray-600">Email</span>
+                      <span className="text-gray-900">{selectedAppointment.email}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-gray-600">Phone</span>
+                      <span className="text-gray-900">{selectedAppointment.phone}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-gray-600">Selected Doctor</span>
+                      <span className="text-gray-900">{selectedAppointment.doctor}</span>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Decline Reason Card */}
+                {selectedAppointment.declineReason && (
+                  <div className="bg-red-50 rounded-lg p-4">
+                    <h3 className="text-lg font-medium text-red-600 mb-1">Decline Reason</h3>
+                    <p className="text-red-900">{selectedAppointment.declineReason}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer with Close Button */}
+              <div className="mt-6 flex justify-center">
+                <button
+                  className="btn btn-primary"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="text-gray-600">Email</span>
-              <span className="text-gray-900">{selectedAppointment.email}</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-gray-600">Phone</span>
-              <span className="text-gray-900">{selectedAppointment.phone}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Decline Reason Card */}
-        {selectedAppointment.declineReason && (
-          <div className="bg-red-50 rounded-lg p-4">
-            <h3 className="text-lg font-medium text-red-600 mb-1">Decline Reason</h3>
-            <p className="text-red-900">{selectedAppointment.declineReason}</p>
           </div>
         )}
-      </div>
-
-      {/* Footer with Close Button */}
-      <div className="mt-6 flex justify-center">
-        <button
-          className="btn btn-primary"
-          onClick={closeModal}
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-)}
 
 
 

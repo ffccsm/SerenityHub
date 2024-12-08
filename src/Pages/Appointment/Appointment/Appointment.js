@@ -18,9 +18,69 @@ const Appointment = () => {
     { name: 'Therapies', price: 4999 },
     { name: 'Aftercare', price: 3999 },
   ]);
+
+  const [doctors] = useState([
+    {
+      name: 'Dr. Farhana Ahmed',
+      title: 'Addiction Professional (International Certified)',
+      bio: 'Specialized in addiction treatment and recovery programs.',
+      profileImage: 'https://i.postimg.cc/vTyJMs7m/15.jpg',
+    },
+    {
+      name: 'Dr. Rezaul Karim',
+      title: 'Psychiatrist (Asst. Professor)',
+      bio: 'Expert in psychiatry and mental health care.',
+      profileImage: 'https://i.postimg.cc/ZnjMSyKf/1.jpg',
+    },
+    {
+      name: 'Dr. Nusrat Jahan',
+      title: 'Addiction Professional (International Certified)',
+      bio: 'Experienced in therapy and rehabilitation for addiction.',
+      profileImage: 'https://i.postimg.cc/G2GWZ2yN/14.jpg',
+    },
+    {
+      name: 'Dr. Arif Chowdhury',
+      title: 'Psychiatrist (Asst. Professor)',
+      bio: 'Specialized in psychiatry, mental health treatment, and care.',
+      profileImage: 'https://i.postimg.cc/T3BHfxfX/10.jpg',
+    },
+    {
+      name: 'Dr. Selina Begum',
+      title: 'Addiction Professional (International Certified)',
+      bio: 'Specialized in addiction treatment and recovery programs.',
+      profileImage: 'https://i.postimg.cc/L4BdDJRg/17.jpg',
+    },
+    {
+      name: 'Dr. Imran Hossain',
+      title: 'Psychiatrist (Asst. Professor)',
+      bio: 'Expert in psychiatric evaluation, diagnosis, and treatment.',
+      profileImage: 'https://i.postimg.cc/hjWwbB50/3.jpg',
+    },
+    {
+      name: 'Dr. Khadija Sultana',
+      title: 'Addiction Professional (International Certified)',
+      bio: 'Focused on addiction recovery and rehabilitation programs.',
+      profileImage: 'https://i.postimg.cc/GmtZbzDv/20.jpg',
+    },
+    {
+      name: 'Dr. Shahidul Alam',
+      title: 'Psychiatrist (Asst. Professor)',
+      bio: 'Expert in clinical psychiatry, treatment, and mental health.',
+      profileImage: 'https://i.postimg.cc/65jmbRPq/8.jpg',
+    },
+    {
+      name: 'Dr. Sultana Akhter',
+      title: 'Addiction Professional (International Certified)',
+      bio: 'Specialized in treating addiction with an international certification.',
+      profileImage: 'https://i.postimg.cc/13dbX602/21.jpg',
+    }
+  ]);
+
+
   const [showPopup, setShowPopup] = useState(false);
-  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [showDoctorProfile, setShowDoctorProfile] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+  const [selectedDoctor, setSelectedDoctor] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -41,7 +101,8 @@ const Appointment = () => {
 
   const handleBookAppointment = (service) => {
     if (!user) {
-      setShowLoginPrompt(true);
+      toast.error('Please log in to book an appointment.');
+      navigate('/login/user');
       return;
     }
     setSelectedService(service);
@@ -59,15 +120,20 @@ const Appointment = () => {
       setPhoneError('Please enter a valid phone number.');
       return;
     }
+    if (!selectedDoctor) {
+      toast.error('Please select a doctor.');
+      return;
+    }
     setPhoneError('');
     try {
       await addDoc(collection(db, 'appointments'), {
-        userId: user ? user.uid : null,
+        userId: user.uid,
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         appointmentDate: selectedDate.toISOString(),
         service: selectedService.name,
+        doctor: selectedDoctor,
         status: 'pending',
       });
       toast.success('Appointment successfully submitted!');
@@ -82,46 +148,23 @@ const Appointment = () => {
     setShowPopup(false);
   };
 
-  const handleLoginRedirect = () => {
-    navigate('/login/user');
+  const handleDoctorProfileClose = () => {
+    setShowDoctorProfile(false);
   };
 
-  const handleSignUpRedirect = () => {
-    navigate('/signup');
-  };
-
-  const getDayClass = ({ date }) => {
-    const day = date.getDay();
-    return day === 6 || day === 0 ? 'bg-red-200 text-red-700' : 'text-gray-700';
-  };
-
-  const handleDateClick = (date) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (date < today) {
-      toast.error('You cannot book an appointment for a past date.');
-    } else {
-      setSelectedDate(date);
-    }
+  const handleDoctorProfileOpen = (doctor) => {
+    setSelectedDoctor(doctor.name);
+    setShowDoctorProfile(true);
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gray-100">
       <div className="max-w-7xl w-full flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-12">
         <div className="flex flex-col items-center w-full md:w-1/3 bg-white rounded-lg shadow-lg p-6 border border-gray-300">
-          <h2 className="text-3xl font-semibold mb-6 text-blue-600">
-            Select Date
-          </h2>
+          <h2 className="text-3xl font-semibold mb-6 text-blue-600">Select Date</h2>
           <Calendar
             onChange={setSelectedDate}
             value={selectedDate}
-            onClickDay={handleDateClick}
-            tileClassName={({ date }) =>
-              date.toDateString() === new Date().toDateString()
-                ? 'bg-blue-100'
-                : getDayClass({ date })
-            }
             className="rounded-lg border border-gray-300 shadow-md p-4 bg-gray-50"
           />
           <div className="mt-4 text-lg text-gray-700">
@@ -130,20 +173,18 @@ const Appointment = () => {
         </div>
 
         <div className="w-full md:w-2/3">
-          <h3 className="text-3xl font-semibold mb-6 text-center text-gray-800">
-            Available Services
-          </h3>
+          <h3 className="text-3xl font-semibold mb-6 text-center text-gray-800">Available Services</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
               <div
                 key={service.name}
-                className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-8 hover:shadow-lg hover:scale-105 transition-transform cursor-pointer"
+                className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-8 hover:shadow-lg"
               >
                 <h4 className="text-xl font-semibold text-gray-800">{service.name}</h4>
                 <p className="text-gray-600 mt-2">Spaces Available: 15</p>
                 <p className="text-lg text-blue-700 font-medium mt-2">Price: {service.price} BDT</p>
                 <button
-                  className="mt-4 bg-blue-600 text-white py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-4 bg-blue-600 text-white py-3 px-8 rounded-lg shadow-md hover:bg-blue-700"
                   onClick={() => handleBookAppointment(service)}
                 >
                   Book Now
@@ -155,10 +196,10 @@ const Appointment = () => {
       </div>
 
       {showPopup && selectedService && (
-        <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-50 animate-fadeInUp">
-          <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative">
             <button
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 z-10 p-2 rounded-full"
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
               onClick={handlePopupClose}
             >
               ✕
@@ -211,44 +252,52 @@ const Appointment = () => {
                 )}
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Confirm Appointment
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700">Select Doctor</label>
+                <select
+                  className="w-full p-3 rounded-lg bg-gray-100"
+                  value={selectedDoctor}
+                  onChange={(e) => setSelectedDoctor(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>Select a doctor</option>
+                  {doctors.map((doctor) => (
+                    <option key={doctor.name} value={doctor.name}>
+                      {doctor.name} ({doctor.title})
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-      {showLoginPrompt && (
-        <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-50 animate-fadeInUp">
-          <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+              <div className="flex justify-between items-center mb-6">
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white py-3 px-8 rounded-lg shadow-md hover:bg-green-700"> Submit Appointment </button> <button type="button" className="bg-blue-600 text-white py-3 px-8 rounded-lg shadow-md hover:bg-blue-700"
+                    onClick={() => handleDoctorProfileOpen(doctors.find((doctor) => doctor.name === selectedDoctor))} > View Doctor Profile </button> </div> </form> </div> </div>)}
+
+      {showDoctorProfile && (
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
             <button
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 z-10 p-2 rounded-full"
-              onClick={() => setShowLoginPrompt(false)}
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
+              onClick={handleDoctorProfileClose}
             >
               ✕
             </button>
-            <h3 className="text-2xl font-bold mb-4 text-center">Please Log In</h3>
-            <p className="text-gray-600 text-center mb-6">
-              You need to log in to book an appointment.
-            </p>
-            <div className="flex space-x-4 justify-center">
-              <button
-                onClick={handleLoginRedirect}
-                className="bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-all"
-              >
-                Login
-              </button>
-              <button
-                onClick={handleSignUpRedirect}
-                className="bg-green-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-green-700 transition-all"
-              >
-                Sign Up
-              </button>
-            </div>
+            {doctors
+              .filter((doctor) => doctor.name === selectedDoctor)
+              .map((doctor) => (
+                <div key={doctor.name} className="text-center">
+                  <img
+                    src={doctor.profileImage}
+                    alt={`${doctor.name}'s profile`}
+                    className="w-32 h-32 rounded-full mx-auto mb-4 border border-gray-300"
+                  />
+                  <h3 className="text-2xl font-bold mb-4">{doctor.name}</h3>
+                  <p className="text-sm text-gray-600 mb-4">{doctor.title}</p>
+                  <p className="text-gray-700">{doctor.bio}</p>
+                </div>
+              ))}
           </div>
         </div>
       )}
